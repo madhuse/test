@@ -1,0 +1,79 @@
+https://javagyanmantra.wixsite.com/website/single-post/2018/02/13/Micros-Services-Architecture
+
+https://javagyanmantra.wixsite.com/website/single-post/2018/02/26/Spring-Cloud-Eureaka
+
+https://javagyanmantra.wixsite.com/website/single-post/2018/02/14/Pivotal-Cloud-Foundry
+
+1.Api Gateway(ZUUL)
+
+2.Service Registry(Eurekha Server)
+
+3.Circuit Breaker (Hystrix)
+
+4.Ribbon(Load Balancing)
+
+5.Feign Client(Alternate to Rest Template)
+
+
+6.Spring Cloud config server:
+...................................
+Config server is where all configurable parameters of microservices are written and maintained. It is more like externalizing properties / resource file out of project codebase to an external service altogether, so that any changes to that property does not necessitate the deployment of service which is using the property. All such property changes will be reflected without redeploying the microservice.
+
+7.Spring Cloud Stream(Kafka,Rabbit Mq)
+
+8.Spring Cloud Stream Distributed Log tracing(Sleuth,zipkin)
+
+
+s
+Hystrix is the implementation of Circuit Breaker pattern, which gives a control over latency and failure between distributed services.
+
+Circuit Breaker(Hystrix)
+
+Load Balancer(Ribbon)
+
+Eurekha discovery(Eureka Client)
+
+API Gateway based on Netflix Zuul which will perform the task of filtering, routing etc.
+Service discovery server which will maintain the records for each microservice present in the system. This server will be based on Spring Eureka
+Finally, a microservice which can be accessed via the API Gateway
+
+
+Eureka Server is an application that holds the information about all client-service applications. Every Micro service will register into the Eureka server and Eureka server knows all the client applications running on each port and IP address. Eureka Server is also known as Discovery Server.
+
+
+eureka.client.register-with-eureka = false - Makes it so the server does not attempt to register itself.
+eureka.client.fetch-registry = false - With this, we inform customers that they must not store the data of the available instances in their local cache. This means that they must consult the Eureka server whenever they need to access a service. In production, this is often set to true to expedite requests. I must comment that this cache is updated every 30 seconds by default.
+
+
+Eureka Server is an application that holds the information about all client-service applications. Every Micro service will register into the Eureka server and Eureka server knows all the client applications running on each port and IP address. Eureka Server is also known as Discovery Server.
+
+
+Zuul acts as an API gateway or Edge service. It receives all the requests coming from the UI and then delegates the requests to internal microservices. So, we have to create a brand new microservice which is Zuul-enabled, and this service sits on top of all other microservices. It acts as an Edge service or client-facing service. Its Service API should be exposed to the client/UI. The client calls this service as a proxy for an internal microservice, then this service delegates the request to the appropriate service.
+
+
+The patterns provided include Service Discovery (Eureka), Circuit Breaker (Hystrix), Intelligent Routing (Zuul) and Client Side Load Balancing (Ribbon).
+
+
+if [computer] == "OTSI-LAP293" {
+	    elasticsearch {
+		hosts => [ "10.80.15.65:9200" ]
+		index => "xyz_new_backupdata"
+		
+	}
+	}
+	
+	if [computer] == "OTSI-LAP293" {
+	    elasticsearch {
+		hosts => [ "10.80.15.65:9200" ]
+		index => "currentdaydata"
+		
+	}
+	}
+	
+	if [computer] == "OTSI-LAP293" {
+	    elasticsearch {
+		hosts => [ "10.80.15.65:9200" ]
+		index => "forecasteddata"
+		
+	}
+	}

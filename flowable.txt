@@ -1,0 +1,392 @@
+Inf_EXTERNAL_10043915_3
+
+https://www.flowable.org/docs/userguide-cmmn/index.html cmmn engine
+
+https://www.flowable.org/docs/userguide/index.html#_get_engine_info 
+    
+ tables :act_hi_taskinst, act_ge_bytearray,act_ge_bytearray,act_hi_procinst,act_hi_varinst
+
+https://documentation.flowable.com/design-user-guide/3.3.0/231AB-task-service.html        //useful
+
+https://www.flowable.org/docs/userguide/index.html#creatingDatabaseTable
+
+https://www.flowable.org/docs/userguide/index.html#flowableDesigner
+
+https://documentation.flowable.com/work-install/3.2.0/332-actuators.html
+
+http://www.jorambarrez.be/blog/category/bpmn/
+
+java -Dloader.path=/location/to/your/driverfolder -jar flowable-idm.war
+
+https://github.com/flowable/flowable-engine/blob/master/modules/flowable-engine/src/main/resources/org/flowable/db/create/flowable.mysql.create.engine.sql
+
+Intermediate events represents a status that is reached in the process and that is modeled explicitly.intermediate events can be useful reaching a certain status as a milestone and u want to measure the time untill the milestone is reached
+
+BPMN : Business Process Model and Notation User Guide
+CMMN : Case Management Model and Notation User Guide
+DMN : Decision Model and Notation User Guide
+FORM : Form engine User Guide
+SINGLE (Beta Version) : Unified version of all previous documentation
+
+Flowable is an open-source workflow engine written in Java that can execute business processes described in BPMN 2.0
+
+Flowable is a business process engine written in Java
+
+The services that the Business Process Engine runs are configured within defined business process models that you create and modify within the system.
+
+A business process is a series of linked software (and possibly human) activities that accomplishes a business goal. The activities are called services, the modules of work that comprise business processes. The services must complete for a business process to run successfully.
+
+A business process model can be a simple linear configuration, or contain one or more decision points requiring human or system determination of the next steps in the process.
+
+In the following conceptual figure of a business process, an oval represents an activity, and a diamond represents a decision point:
+
+
+
+Business Process Flow
+The Business Process Engine automatically selects the appropriate business process model to run when data enters the system through an input adapter. When an input adapter receives data from an external system, the Business Process Engine locates the appropriate business process or processes to call, and starts the process or delivers the incoming data to the appropriate process that is already running.
+
+
+
+https://www.flowable.org/docs/userguide/index.html
+
+
+
+Working with historical data
+
+
+One of the many reasons for choosing to use a process engine like Flowable is because it automatically stores audit data or historical data for all the process instances. This data allows the creation of rich reports that give insights into how the organization works, where the bottlenecks are, etc
+
+
+https://www.flowable.org/docs/userguide/index.html#springSpringBoot
+
+
+https://blog.flowable.org/2019/08/07/migration-of-a-bpmn-process/
+
+
+https://www.baeldung.com/flowable
+
+
+The Saga pattern describes how to solve distributed (business) transactions without two-phase-commit as this does not scale in distributed systems. The basic idea is to break the overall transaction into multiple steps or activities. Only the steps internally can be performed in atomic transactions but the overall consistency is taken care of by the Saga. The Saga has the responsibility to either get the overall business transaction completed or to leave the system in a known termination state. So in case of errors a business rollback procedure is applied which occurs by calling compensation steps or activities in reverse order.
+
+
+Flowable Modeler; http://localhost:8080/flowable-modeler
+Flowable Task; http://localhost:8080/flowable-task
+Flowable Admin; http://localhost:8080/flowable-admin
+Flowable IDM; http://localhost:8080/flowable-idm
+
+provide admin with password test
+
+Improve operations. ...
+Better customer experiences. ...
+Deeper insights. ...
+Better information management. ...
+Ease compliance and risk management.
+
+create a BPMN process definition that executes a Java service task.
+Make your enterprise more effective, more transparent and more scalable with the award-winning Flowable intelligent automation platform.
+
+http://bpmn20inaction.blogspot.com/2016/12/coding-introduction-with-flowable-6.html
+
+https://github.com/flowable/flowable-engine/releases/tag/flowable-6.4.1
+
+Problem
+Let’s assume you have a running application in production and everything works fine. After a few months in production your customer would like to have some changes within the process models. Because the changes are urgent for the customer, the changes should also be applied to all running process instances. For this reason you have to think about a migration path to get all running process instances updated.
+
+Flowable has powerful migration functionalities to migrate your BPMN processes. Let’s look at them by using a simple table reservation process.
+
+
+The project comprises a set of modules that can operate together:
+...................................................................
+BPMN Engine, the core Business Process Model and Notation workflow processor
+CMMN Engine, a Case Management Model and Notation processor
+DMN Engine, an implementation of a subset of Decision Model and Notation based business rules
+Forms Engine, a forms service that can be used in conjunction with the Tasks web app or a custom application
+Modeler, a web-based graphical authoring interface for editing BPMN, DMN and forms models
+Designer, an Eclipse plug-in for designing BPMN models
+IDM, an example web tool to manage user and group identities and privileges
+Tasks, an example web application to start processes, view task queues, tasks and forms
+
+
+.......................................
+(BPMN) is a graphical representation for specifying business processes in a business process model.
+
+Case Management Model and Notation (CMMN) is a graphical representation for graphically expressing a Case, as well as an interchange format for exchanging Case models among different tools.
+
+Decision Model and Notation (DMN) is a standard published by the Object Management Group. It is a standard approach for describing and modeling repeatable decisions within organizations to ensure that decision models are interchangeable across organizations.
+
+
+
+https://www.flowable.org/docs/userguide-cmmn/index.html#chapterApi
+
+
+
+
+
+
+jbarrez
+
+
+To ensure high performance query and reporting of data a clusterable index server based on Elasticsearch is used in addition to the database.
+flowable.indexing.elasticsearch-addresses=http://localhost:9200
+https://documentation.flowable.com/engage-install/3.2.0/110-overview.html
+
+
+	at org.springframework.test.context.TestContextManager.prepareTestInstance(TestContextManager.java:246) [spring-test-5.1.2.RELEASE.jar:5.1.2.RELEASE]
+
+
+editors
+
+f51408ea-ca61-11e9-a7d6-b8ac6fbe44f6
+
+
+  HistoricTaskInstance taskObject = taskQuery.singleResult();
+
+        if (taskObject == null) {
+            throw new FlowableObjectNotFoundException("Historic task instance '" + taskId + "' could not be found.", HistoricTaskInstanceEntity.class);
+        }
+
+
+ HistoryService historyService = processEngine.getHistoryService();
+
+
+https://www.programcreek.com/java-api-examples/?api=org.flowable.engine.HistoryService
+
+https://community.alfresco.com/thread/219990-easy-way-to-visualize-a-process-instance-history
+
+https://www.flowable.org/docs/userguide/index.html#_get_engine_info
+
+
+BPMN,CMMN,DMN ARE LANGUAGES FOR DESCRIBING OPERATIONS
+
+BPMN IS ABOUT PROCESSING:IS UNIVERSAL GRAPHICAL NOTATION FOR DESCRIBING BUSINESS PROCESS,EASILY UNDERSTANDABLE BY THE BUSINESS STACK HOLDERS,CURRENT VERSION IS 2.0
+
+EVENT:CIRCLE,ACTIVICTY:RECTANGLE,GATEWAY:RHOUMBUS,FLOW:LINE
+
+CMMN IS ABOUT MANAGING:IS GRAPHICALLY EXPRESSING A CASE,AIM TO MODEL ACTIVITIES THAT DEPENDS ON EVOLVING CICUMSTANCES AND AD HOC DECISIONS BY THE KNOWLEDGE WORKERS ,PROVIDES FLEXIBILITY VIA RUN TIME ,CURRENT VERSION IS:1.0
+
+DMN IS ABOUT DECISION MAKING:USED FOR REPEATABLE BUSINESS PROCESS,ENABLES VARIOUS GROUPS TO EFFECTIVILY COLLABORATE IN DEFINING A MODEL,PROVIDES STANDARD NOTATION FOR DECISION TABLES,CURRENT VERSION IS:1.0
+
+
+BPMN vs CMMN
+In recent decades, there has been a focus on modeling and automating well-structured and routine processes. BPMN is best used for well-structure and highly predictable work where knowledge workers mainly execute tasks, while CMMN covers the section of less predictable processes with the active involvement of knowledge workers making decisions and planning during run-time
+
+for cmmn refer below url:
+https://www.visual-paradigm.com/guide/cmmn/what-is-cmmn/
+
+
+http://localhost:8080/flowable-modeler/#/processes/6df42d65-c8b7-11e9-aad8-b8ac6fbe44f6 export to BPMN2.0 MODEL
+
+
+BPMN symbols are so simple that can be understood by everyone, including business analysts who create and improve business processes, technical developers who implement the process changes, business managers who are monitoring changes, and even non-technical people like stakeholders who want to understand how the future process will look like. BPMN is an effective communication tool as it provides a common and simple visual language for specifying business processes, which eliminates miscommunication between the different parties.
+
+
+There are four kinds of connecting objects: Sequence flows, message flows, associations and data associations.
+
+Message flow is used to show the flow of messages between separate pools/lanes. You cannot use message flow to connect flow objects within the same participant.
+
+https://www.modernanalyst.com/Careers/InterviewQuestions/tabid/128/ID/2530/What-are-Message-Flows-in-BPMN.aspx
+
+Message flows are how the two separately controlled processes communicate and collaborate with one another.  An activity or event in one pool can initiate a message to another pool.  Message Flows are depicted as dashed lines with an empty circle showing where the message originates and and empty arrowhead where the message terminates.
+
+
+
+Gain insights to how your business is running. Find what’s working well and what parts of it may need improvement. Generate reports for specific time periods, cases and processes
+
+1) identity service:Service to manage Users and Groups.
+
+2) task service:Service which provides access to Task and form related operations.
+
+3) FormService formService:Access to form data and rendered forms for starting new process instances and completing tasks.(camunda)
+
+4) ManagementService:Service for admin and maintenance operations on the process engine. These operations will typically not be used in a workflow driven application, but are used in for example the operational console.
+
+5) Repository service:Service providing access to the repository of process definitions and deployments
+
+6) Runtime service:this runtime information only contains the actual runtime state at any given moment and it is optimized for runtime process execution performance
+
+7) DynamicBpmnService:Service providing access to the repository of process definitions and deployments
+
+8) history service:Service exposing information about ongoing and past process instances. This is different from the runtime information in the sense that this runtime    information only contains the actual runtime state at any given moment and it is optimized for runtime process execution performance. The history information is    optimized for easy querying and remains permanent in the persistent storage.
+
+ProcessEngine:
+.................
+Provides access to all the services that expose the BPM and workflow operations. 
+
+org.flowable.engine.RuntimeService: Allows the creation of org.flowable.engine.repository.Deployments and the starting of and searching on org.flowable.engine.runtime.ProcessInstances. 
+org.flowable.engine.TaskService: Exposes operations to manage human (standalone) org.flowable.task.api.Tasks, such as claiming, completing and assigning tasks 
+org.flowable.engine.IdentityService: Used for managing org.flowable.idm.api.Users, org.flowable.idm.api.Groups and the relations between them< 
+org.flowable.engine.ManagementService: Exposes engine admin and maintenance operations 
+org.flowable.engine.HistoryService: Service exposing information about ongoing and past process instances. 
+Typically, there will be only one central ProcessEngine instance needed in a end-user application. Building a ProcessEngine is done through a ProcessEngineConfiguration instance and is a costly operation which should be avoided. For that purpose, it is advised to store it in a static field or JNDI location (or something similar). This is a thread-safe object, so no special precautions need to be taken.
+
+spring.h2.console.enabled:true
+spring.datasource.platform:h2
+spring.datasource.url:jdbc:h2:mem:ticket
+@Transactional:
+.................
+At a high level, Spring creates proxies for all the classes annotated with @Transactional – either on the class or on any of the methods. The proxy allows the framework to inject transactional logic before and after the running method – mainly for starting and committing the transaction.
+
+...................................
+spring.jpa.hibernate.ddl-auto=update
+http://localhost:8080/actuator/flowable
+spring.datasource.driver-class-name=com.mysql.jdbc.Driver
+spring.datasource.url=jdbc:mysql://127.0.0.1:3306/activiti?characterEncoding=UTF-8
+spring.datasource.username=root
+spring.datasource.password=root
+spring.jpa.hibernate.ddl-auto=create
+spring.main.allow-bean-definition-overriding=true
+https://github.com/flowable/flowable-engine/blob/master/modules/flowable-ui-task/flowable-ui-task-app/src/main/resources/flowable-default.properties
+
+ACT_GE_*: general data, which is used for various use cases.
+ACT_HI_*: HI stands for history. These are the tables that contain historic data, such as past process instances, variables, tasks, and so on.
+ACT_RU_*: RU stands for runtime. These are the runtime tables that contain the runtime data of process instances, user tasks, variables, jobs, and so on. Flowable only stores the runtime data during process instance execution and removes the records when a process instance ends. This keeps the runtime tables small and fast.
+ACT_RE_*: RE stands for repository. Tables with this prefix contain static information such as process definitions and process resources (images, rules, etc.).
+
+FormEngines:
+............
+FormEngines.getDefaultFormEngine() will initialize and build a Form engine the first time it is called and afterwards always return the same Form engine. Proper creation and closing of all Form engines can be done with FormEngines.init() and FormEngines.destroy()
+
+
+9. Forms
+Flowable provides a convenient and flexible way to add forms for the manual steps of your business processes. We support two strategies to work with forms: Built-in form rendering with a form definition (created with the form designer) and external form rendering. For the external form rendering strategy form properties can be used (that was supported in the Explorer web application in version 5), or a form key definition that points to an external form reference that can be resolved with custom coding.
+
+The database names of Flowable Form all start with ACT_FO_.
+
+ACT_FO_DATABASECHANGELOG: This table is used by Liquibase to track which changesets have been run.
+
+ACT_FO_DATABASECHANGELOGLOCK: This table is used by Liquibase to ensure only one instance of Liquibase is running at one time.
+
+ACT_FO_FORM_DEFINITION: This table contains the definition info of the deployed form definitions.
+
+ACT_FO_FORM_INSTANCE: This table contains the form instances with the values that have been filled in by a user.
+
+ACT_FO_FORM_DEPLOYMENT: This table contains the deployment metadata.
+
+ACT_FO_FORM_RESOURCE: This table contains the Form definition resource.
+
+HOW THE FLOWABLE EVOLVED:
+........................
+This is really a topic for the forums, not a code issue.
+
+The team that built Activiti left Alfresco and could not continue working on it with the constraints made by Alfresco, so it was forked. The original Activiti architects - Joram and Tijs - are now working on Flowable. Advances have continued to be made in the core engines, including many new features and significant performance improvements. You can look at the code that's been added to Activiti and Flowable and make the comparison yourself.
+
+
+Assignment:
+................
+
+Owner
+
+The Owner attribute describes who owns the task. The owner can have specific task permissions defined in the security policy.
+
+Assignee
+
+Defines the assignee of a task. The assignee is the person who is responsible for the completion of a task. By default, the assignee is set to $INITIATOR which is a special variable that is set to the user who started the process. It is possible to set the assignee directly or through an expression. In both cases, the expected value is the User ID of the assignee.
+<userTask id="theTask" name="my task" activiti:assignee="${person.id}"/>
+
+Candidate users
+
+Defines a list of users that can become assignee by claiming the task. It is possible to set the candidate users directly or through an expression. In both cases, a list of user IDs is expected.
+<userTask id="theTask" name="my task" activiti:candidateUsers="kermit, gonzo" />
+
+
+Candidate groups
+
+Defines one or more groups that can become assignee by claiming the task. You can either directly select a group or use an expression. It is possible to set the candidate groups directly or through an expression. In both cases, a list of group IDs is expected.
+<userTask id="theTask" name="my task" activiti:candidateGroups="management, accountancy" />
+
+
+Participant users
+
+The selected users to add as participant identity links to the task.
+
+Participant groups
+
+The selected groups to add as participant identity links to the task.
+
+Watcher users
+
+The selected users to add as watcher identity links to the task.
+
+Watcher groups
+
+The selected groups to add as watcher identity links to the task.
+
+
+EMAIL TASK:
+...........
+The Email task is implemented as a dedicated Service Task and is defined by setting 'mail' for the type of the service task.
+
+email.host=192.168.0.1
+email.port=25
+email.useCredentials=false
+email.username=johnny.depp (also tried: johnny.depp@company.com)
+email.password=pass
+
+<serviceTask id="sendMail" flowable:type="mail">
+  <extensionElements>
+    <flowable:field name="from" stringValue="order-shipping@thecompany.com" />
+    <flowable:field name="to" expression="${recipient}" />
+    <flowable:field name="subject" expression="Your order ${orderId} has been shipped" />
+    <flowable:field name="html">
+      <flowable:expression>
+        <![CDATA[
+          <html>
+            <body>
+              Hello ${male ? 'Mr.' : 'Mrs.' } ${recipientName},<br/><br/>
+
+              As of ${now}, your order has been <b>processed and shipped</b>.<br/><br/>
+
+              Kind regards,<br/>
+
+              TheCompany.
+            </body>
+          </html>
+        ]]>
+      </flowable:expression>
+    </flowable:field>
+  </extensionElements>
+</serviceTask>
+
+
+java -Dloader.path=/location/to/your/driverfolder -jar flowable-idm.war
+
+
+Camunda is a leading software platform for process and decision automation. Cawemo is part of this powerful technology stack, integrating seamlessly with all Camunda products.
+
+
+GET management/tables
+
+GET identity/groups/{groupId}
+ workflow engine:
+...................
+A workflow engine manages and monitors the state of activities in a workflow, such as the processing and approval of a loan application form, and determines which new activity to transition to according to defined processes (workflows).
+
+(BPMN):
+........
+Business Process Model and Notation (BPMN) is a graphical representation for specifying business processes in a business process model. ... Though it is an OMG specification, BPMN is also ratified as ISO 19510. The latest version is BPMN 2.0.2, published in January 2014.
+
+use case of bpmn:
+...............
+So whenever there is a need to describe a business process in a formal way, that's the right time to start using BPMN. Typical use cases for BPMN are: Process Automation If you are aiming to automate your business processes with a BPMS than you should adopt BPMN
+
+
+Other examples of plan items are process tasks, case tasks and stages.
+
+Plan items can have sentries
+
+The plan items have criteria (entry or exit) that reference a sentry (not the other way around)
+
+elastic plugins
+
+sign in social provider
+
+o auth
+
+need to add to resume
+
+
+i have to send the sample elapsed time and no of records processed for day1 customer
+
+index the data with no of records
+
+add date field to day wise

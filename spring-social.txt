@@ -1,0 +1,347 @@
+
+Sprig social google autoconfig(most important)
+...............................
+http://littlebigextra.com/how-to-fix-spring-social-facebook-one-user-per-application-problem/
+
+http://littlebigextra.com/part-1-authorising-user-using-spring-social-google-facebook-and-linkedin-and-spring-security/
+
+http://littlebigextra.com/how-to-change-the-default-spring-social-redirect-flow/
+
+https://github.com/abhishek-galoda/springsociallogin-part1
+
+file:///C:/Users/MADHU~1.AKU/AppData/Local/Temp/Rar$EXa0.763/springsociallogin-part1-master/post.html
+
+https://docs.spring.io/spring-social/docs/1.1.x/reference/htmlsingle/#section_how-to-get
+
+
+
+
+
+
+
+
+
+
+spring security configuration important
+http://chillyfacts.com/integrate-login-with-google-in-websites-with-java/
+
+https://spring.io/guides/gs/accessing-twitter/
+https://github.com/spring-projects/spring-social-samples
+
+https://docs.spring.io/spring-social/docs/1.0.x/reference/html/connecting.html
+
+https://samerabdelkafi.wordpress.com/2016/02/29/social-login-with-spring-social/
+
+https://github.com/samer-abdelkafi/ssong-project
+
+https://spring.io/guides/gs/accessing-facebook/
+
+
+https://github.com/naturalprogrammer/spring-boot-security-social-sample
+
+
+https://github.com/eugenp/tutorials/tree/master/spring-social-login/src/main/java/org/baeldung
+
+https://github.com/pkainulainen/spring-social-examples/tree/master/sign-in/spring-mvc-normal/src/main/resources
+
+
+SPRING SOCIAL CONFIG
+....................
+
+
+@Configuration
+@EnableSocial
+public class SocialConfig implements SocialConfigurer {
+
+	@Inject
+	private DataSource dataSource;
+
+	//
+	// SocialConfigurer implementation methods
+	//
+	
+	@Override
+	public void addConnectionFactories(ConnectionFactoryConfigurer cfConfig, Environment env) {
+		cfConfig.addConnectionFactory(new FacebookConnectionFactory(env.getProperty("facebook.appKey"), env.getProperty("facebook.appSecret")));
+	}
+
+
+	/**
+	 * Singleton data access object providing access to connections across all users.
+	 */
+	@Override
+	public UsersConnectionRepository getUsersConnectionRepository(ConnectionFactoryLocator connectionFactoryLocator) {
+		JdbcUsersConnectionRepository repository = new JdbcUsersConnectionRepository(dataSource, connectionFactoryLocator, Encryptors.noOpText());
+		repository.setConnectionSignUp(new SimpleConnectionSignUp());
+		return repository;
+	}
+	
+	public UserIdSource getUserIdSource() {
+		return new UserIdSource() {
+			@Override
+			public String getUserId() {
+				return SecurityContext.getCurrentUser().getId();
+			}
+		};
+	}
+
+	@Bean
+	@Scope(value="request", proxyMode=ScopedProxyMode.INTERFACES)
+	public Facebook facebook(ConnectionRepository repository) {
+		Connection<Facebook> connection = repository.findPrimaryConnection(Facebook.class);
+		return connection != null ? connection.getApi() : null;
+	}
+
+	@Bean
+	public ProviderSignInController providerSignInController(ConnectionFactoryLocator connectionFactoryLocator, UsersConnectionRepository usersConnectionRepository) {
+		return new ProviderSignInController(connectionFactoryLocator, usersConnectionRepository, new SimpleSignInAdapter());
+	}
+
+}
+
+
+
+
+
+
+
+
+SPRING-SOCIAL XML CONFIG
+...........................
+
+
+
+
+
+<bean class="org.springframework.social.connect.web.ProviderSignInController">
+<!-- relies on by-type autowiring for the constructor-args -->    
+<constructor-arg ref="signInAdapter" /> 
+</bean>
+
+<bean id="connectionFactoryLocator" 
+  class="org.springframework.social.connect.support.ConnectionFactoryRegistry">
+<property name="connectionFactories">
+    <list>
+        <bean class="org.springframework.social.twitter.connect.TwitterConnectionFactory">
+            <constructor-arg value="${twitter.consumerKey}" />
+            <constructor-arg value="${twitter.consumerSecret}" />               
+        </bean>
+        <bean class="org.springframework.social.facebook.connect.FacebookConnectionFactory">
+            <constructor-arg value="${facebook.clientId}" />
+            <constructor-arg value="${facebook.clientSecret}" />                
+        </bean>
+    </list>
+</property>
+</bean>
+
+<bean id="connectionRepository" factory-method="createConnectionRepository" 
+  factory-bean="usersConnectionRepository" scope="request">
+<constructor-arg value="#{request.userPrincipal.name}" />
+<aop:scoped-proxy proxy-target-class="false" />
+</bean>
+
+<bean id="signInAdapter" class="com.test.social.SimpleSignInAdapter"/>
+
+<bean id="usersConnectionRepository" 
+  class="org.springframework.social.connect.jdbc.JdbcUsersConnectionRepository">
+<constructor-arg ref="dataSource" />
+<constructor-arg ref="connectionFactoryLocator" />
+<constructor-arg ref="textEncryptor" />
+</bean>
+
+<bean id="textEncryptor" class="org.springframework.security.crypto.encrypt.Encryptors" 
+        factory-method="noOpText" />
+
+
+
+
+
+
+
+
+
+
+....................................................................................
+
+
+
+
+
+
+
+<context:component-scan base-package="org.schoolit.usermanager.config" /> 
+
+<!-- component-scan / controllers -->
+<context:component-scan base-package="org.schoolit.webapplication.*" />
+<context:component-scan base-package="org.schoolit.spring.social.*"/>
+
+<!-- property-placeholder's  -->
+<context:property-placeholder location="classpath:oauth.properties"/>
+
+<!-- resource mapping  -->
+<mvc:resources mapping="/gen/**" location="/WEB-INF/gen/" cache-period="31556926"/>
+<mvc:resources mapping="/resources/**" location="/WEB-INF/resources/" cache-period="31556926"/>
+
+<!-- JSP ViewResolver -->
+<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <property name="prefix">
+        <value>/pages/</value>
+    </property>
+    <property name="suffix">
+        <value>.jsp</value>
+    </property>
+</bean>
+
+<!-- twitter stuff start --> 
+<bean id="handlerExceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+    <property name="exceptionMappings">
+        <props>
+            <prop key="Exception">error</prop>
+        </props>
+    </property>
+</bean> 
+
+ <bean id="twitterTemplate" 
+    class="org.springframework.social.twitter.api.impl.TwitterTemplate">
+    <constructor-arg value="${twitter.oauth.consumerKey}"/>
+    <constructor-arg value="${twitter.oauth.consumerSecret}"/>
+<!--<constructor-arg value="${twitter.oauth.accessToken}"/>
+    <constructor-arg value="${twitter.oauth.accessTokenSecret}"/>   --> 
+</bean> 
+
+
+
+<bean id="connectionFactoryLocator" class="org.springframework.social.connect.support.ConnectionFactoryRegistry">
+    <property name="connectionFactories">
+        <list>
+            <bean class="org.springframework.social.twitter.connect.TwitterConnectionFactory">
+                <constructor-arg value="${twitter.oauth.consumerKey}" />
+                <constructor-arg value="${twitter.oauth.consumerSecret}" />          
+            </bean>
+        </list>
+    </property>
+</bean>  
+
+
+<bean id="connectionRepository" factory-method="createConnectionRepository" factory-bean="usersConnectionRepository" scope="request">
+    <constructor-arg value="#{request.userPrincipal.name}" />
+    <aop:scoped-proxy proxy-target-class="true" />
+</bean>
+
+<bean id="usersConnectionRepository" 
+      class="org.springframework.social.connect.jdbc.JdbcUsersConnectionRepository">
+    <constructor-arg ref="dataSource" />
+    <constructor-arg ref="connectionFactoryLocator" />
+    <constructor-arg ref="textEncryptor" />
+</bean>
+
+<bean id="textEncryptor" class="org.springframework.security.crypto.encrypt.Encryptors" 
+            factory-method="noOpText" />
+
+ <bean id="connectController" class="org.springframework.social.connect.web.ConnectController">
+    <constructor-arg ref="connectionFactoryLocator"/>
+    <constructor-arg ref="connectionRepository"/>
+    <property name="applicationUrl" value="http://localhost:8080/CentralPortal/" />
+    <property name="connectInterceptors">
+            <list> 
+                <bean class="org.schoolit.spring.social.TweetAfterConnectInterceptor"/>
+            </list>
+    </property> 
+</bean>   
+
+
+
+
+java based config for spring-social(below is the xml config for same)
+.....................................
+
+@Configuration
+public class SocialConfig {
+
+    @Inject
+    private Environment environment;
+	
+    @Bean
+    public ConnectionFactoryLocator connectionFactoryLocator() {
+        ConnectionFactoryRegistry registry = new ConnectionFactoryRegistry();
+        registry.addConnectionFactory(new GoogleConnectionFactory(
+            environment.getProperty("google.consumerKey"),
+            environment.getProperty("google.consumerSecret")));
+        return registry;
+    }
+
+}
+
+
+
+configuring in spring-servlet.xml
+...........................................................................................................
+
+
+
+<bean id="connectionFactoryLocator" class="org.springframework.social.connect.support.ConnectionFactoryRegistry">
+    <property name="connectionFactories">
+        <list>
+            <bean class="org.springframework.social.google.connect.GoogleConnectionFactory">
+                <constructor-arg value="${google.consumerKey}" />
+                <constructor-arg value="${google.consumerSecret}" />				
+            </bean>
+        </list>
+    </property>
+</bean>    
+
+
+
+
+
+
+
+
+
+
+
+https://developers.google.com/+/web/signin/
+190507
+
+
+
+
+
+thanks for the everyones wishes
+
+best wishes for New year to all
+
+
+
+
+
+tutorials/spring-social-login/src/main/resources/templates/login.html
+
+
+
+
+http://www.littlebigextra.com/access-google-data-using-spring-social/
+
+https://github.com/spring-social/spring-social-google
+
+https://github.com/spring-social/spring-social-google-example
+
+http://gabiaxel.github.io/spring-social-google-reference/connecting.html
+
+https://www.javacodegeeks.com/2013/10/adding-social-sign-in-to-a-spring-mvc-web-application-configuration.html
+
+https://github.com/hellokoding/registration-login-spring-xml-maven-jsp-mysql
+
+https://github.com/abhishek-galoda/springsociallogin-part1/tree/master/src/main/java/com/login
+
+https://github.com/spring-social/spring-social-google-example
+
+
+
+
+
+
+
+
+
+

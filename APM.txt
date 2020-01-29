@@ -1,0 +1,159 @@
+elapsed time
+
+no of records
+
+
+
+27757 without source start date
+
+3411 with date
+
+table having 1090
+
+115 no of records
+
+115 elapsed time
+
+1921 cpu usage
+
+Monitoring Kafka with Elasticsearch, Kibana, and Beats:
+..........................................................
+https://www.elastic.co/blog/monitoring-kafka-with-elasticsearch-kibana-and-beats?iesrc=rcmd&astid=b1ae2596-2c19-43f6-bb2b-da5a8e0b6b88&at=58&rcmd_source=WIDGET&req_id=93386467-4936-403c-b802-fc0aa8d15326
+
+APM:
+...........
+https://www.elastic.co/guide/en/apm/get-started/current/overview.html#overview
+
+Application Performance Monitoring, aka APM, is one of the most common methods used by engineers today to measure the availability, response times and behavior of applications and services
+
+Elastic APM allows you to track key performance-related information such as requests, responses, database transactions, errors, etc.
+
+server level monitoring:Beats
+
+Logging:Logstash,Beats
+
+Application level monitoring:APM
+
+Real User Monitoring:APM
+
+ELK Secure:X-Pack(For 6.8 and 7.1)
+.................................
+https://www.elastic.co/blog/security-for-elasticsearch-is-now-free
+.................
+https://www.elastic.co/blog/configuring-ssl-tls-and-https-to-secure-elasticsearch-kibana-beats-and-logstash?baymax=recommended-content&elektra=blog&iesrc=rcmd&astid=c2671dff-1916-4631-b126-4149e4e258a7&at=58&rcmd_source=WIDGET&req_id=bb5f3dd2-0a72-49d6-a869-617a33ea46ab
+
+
+
+14-11-2019
+
+15-11-2019
+
+16-11-2019
+
+17-11-2019
+
+18-11-2019
+
+19-11-2019
+
+20-11-2019
+
+21-11-2019
+
+22-11-2019
+
+23-11-2019
+
+24-11-2019
+
+25-11-2019
+
+26-11-2019
+
+27-11-2019
+
+
+
+"key_as_string" : "12-12-2019",
+          "key" : 1576108800000,
+          "doc_count" : 224
+        },
+        {
+          "key_as_string" : "13-12-2019",
+          "key" : 1576195200000,
+          "doc_count" : 196
+        },
+        {
+          "key_as_string" : "14-12-2019",
+          "key" : 1576281600000,
+          "doc_count" : 327
+        },
+        {
+          "key_as_string" : "15-12-2019",
+          "key" : 1576368000000,
+          "doc_count" : 325
+        },
+        {
+          "key_as_string" : "16-12-2019",
+          "key" : 1576454400000,
+          "doc_count" : 313
+        },
+        {
+          "key_as_string" : "17-12-2019",
+          "key" : 1576540800000,
+          "doc_count" : 404
+        },
+        {
+          "key_as_string" : "18-12-2019",
+          "key" : 1576627200000,
+          "doc_count" : 452
+        },
+        {
+          "key_as_string" : "19-12-2019",
+          "key" : 1576713600000,
+          "doc_count" : 148
+        },
+        {
+          "key_as_string" : "20-12-2019",
+          "key" : 1576800000000,
+          "doc_count" : 181
+        },
+        {
+          "key_as_string" : "21-12-2019",
+          "key" : 1576886400000,
+          "doc_count" : 141
+        },
+        {
+          "key_as_string" : "22-12-2019",
+          "key" : 1576972800000,
+          "doc_count" : 149
+        },
+        {
+          "key_as_string" : "23-12-2019",
+          "key" : 1577059200000,
+          "doc_count" : 117
+        },
+        {
+          "key_as_string" : "24-12-2019",
+          "key" : 1577145600000,
+          "doc_count" : 302
+        },
+        {
+          "key_as_string" : "25-12-2019",
+          "key" : 1577232000000,
+          "doc_count" : 132
+        }
+      ]
+    }
+  }
+}
+
+
+
+https://www.java67.com/2017/08/difference-between-abstract-class-and-interface-in-java8.html
+
+https://data-flair.training/blogs/spark-tutorial/
+
+
+
+

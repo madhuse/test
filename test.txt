@@ -1,0 +1,37 @@
+The first-level cache – Session (Earlier hibernate already provide this level of cache)
+The second-level cache –Session-factory-level cache
+and the query cache.
+The first-level cache:
+The first level cache type is the session cache. The session cache caches object within the current session but this is not enough for long level i.e. session factory scope.
+The second-level cache:
+The second-level cache is called ‘second-level’ because there is already a cache operating for you in Hibernate for the duration you have a session open. A Hibernate Session is a transaction-level cache of persistent data. It is possible to configure a SessionFactory-level cache on a class-by-class and collection-by-collection basis.
+                 second-level cache
+— Across sessions in an Application
+— Across applications (different applications on same servers with same database)
+— Across clusters (different applications on different servers with same database)
+NOTE: Be careful Caches are never aware of changes made to the persistent store by another application i.e. suppose one application deploy one server with using hibernate and get the data from database and put to the cache for further using purpose but another application deployed another server which does not using any ORM tool so it does mot know about Cache and direct interacting with database and may be update data of database. Now data in Cache is invalid.
+
+ResponseEntity:
+...............
+ResponseEntity represents an HTTP response, including headers, body, and status. While @ResponseBody puts the return value into the body of the response, ResponseEntity also allows us to add headers and status code.
+
+
+JAXB:
+.....
+JAXB stands for Java Architecture for XML Binding. ... As part of this process, JAXB provides methods for unmarshalling (reading) XML instance documents into Java content, and then marshalling (writing) Java content back into XML instance documents. JAXB also provides a way to generate XML schemas from Java objects
+
+marshalling:java objects into xml
+
+unmarshalling :xml to java object
+
+
+password encoders in java:MD5,SHA256,SHA512PBKDF2,BCryptPasswordEncoder
+
+
+Last Batch Run Elapsed Time(14-08-2019)
+
+noof records
+elapsed time
+day
+source_start_date
+table

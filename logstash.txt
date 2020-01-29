@@ -1,0 +1,50 @@
+Gsub is used to removing the part of the string/field values
+
+mutate {
+    gsub => [                          here iam removing the {}
+     "sourceid", "[{}]", "",
+     "executionid", "[{}]", ""
+    ]
+	      
+  } 
+
+In filebeat we have to use:
+.........................          after and before
+multiline.pattern: '^\['
+multiline.negate: true
+multiline.match: after           
+
+
+
+in logstash cofig file we have to use previous and next
+
+input {
+      file {
+        path => "/var/log/someapp.log"
+        codec => multiline {
+          # Grok pattern names are valid! :)
+          pattern => "^%{TIMESTAMP_ISO8601} "
+          negate => true
+          what => "previous"
+        }
+      }
+    }
+
+
+suppose any line that start with space(//s) will be appended to the previous line by using the 
+
+
+pattern => "^\\s"
+what => "previous"
+negate:false
+
+2015-03-23 11:11:50,778 INFO Initializing Systems Cache
+
+TIMESTAMP_ISO8601 %{YEAR}-%{MONTHNUM}-%{MONTHDAY}[T ]%{HOUR}:?%{MINUTE}(?::?%{SECOND})?%{ISO8601_TIMEZONE}?
+
+
+[2015-08-24 11:49:14,389][INFO ][env                      ] [Letha] using [1] data paths, mounts [[/
+(/dev/disk1)]], net usable_space [34.5gb], net total_space [118.9gb], types [hfs]
+
+
+

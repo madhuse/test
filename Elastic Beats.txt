@@ -1,0 +1,187 @@
+filebeat is not supported in windows for shipping system logs so that you can use winlogbeat
+
+
+5892
+
+https://www.elastic.co/guide/en/beats/winlogbeat/master/winlogbeat-reference-yml.html
+
+
+to run metric beat use below command:
+.....................................
+metricbeat.exe -e -d "*"
+
+to test winlogbeat config file use below command:
+.................................................
+
+C:\Program Files\Winlogbeat> .\winlogbeat.exe -c .\winlogbeat.yml -configtest -e
+
+
+to run winlogbeat use below command:
+..................................
+
+winlogbeat.exe
+
+
+For running 
+
+to run filebeat use below command:
+.................................
+
+filebeat -e -c filebeat.yml -d "publish"
+
+C:\Program Files\Filebeat> .\filebeat.exe -c filebeat.yml -e -d "*"
+
+to run logstash use below command:
+.................................
+
+logstash -f configfilename.conf
+
+Filebeat :
+
+Loaded sample web server log files into elastic 
+
+Index name is:myapplicationlogs, testlogs(For Elastic search logs)
+..........
+Filebeat is one of the best log file shippers out there today — it’s lightweight
+
+Written in Go and based on the Lumberjack protocol, Filebeat was designed to have a low memory footprint, handle large bulks of data, support encryption, and deal efficiently with back pressure. For example, Filebeat records the last successful line indexed in the registry, so in case of network issues or interruptions in transmissions, Filebeat will remember where it left off when re-establishing a connection. If there is an ingestion issue with the output, Logstash or Elasticsearch, Filebeat will slow down the reading of files.
+
+we can specify below inputs for inputs:
+...........................
+Log
+Stdin
+Redis
+UDP
+Docker
+TCP
+Syslog
+NetFlow
+
+we can specify below outputs for filebeat:
+
+Elasticsearch
+Logstash
+Kafka
+Redis
+File
+Console
+Cloud
+
+
+
+
+
+Metricbeat:
+..........
+
+loaded system cpu and memory usage in windows using MetricBeat
+
+Index name is:metricbeat-6.2.3-2019.03.11
+
+https://hub.packtpub.com/how-to-configure-metricbeat-for-application-and-server-infrastructure/
+
+ As its name implies, Metricbeat is a lightweight shipper that collects and ships various system and service metrics to a specified output destination.
+
+Metricbeat is installed on the different servers in your environment and used for monitoring their performance, as well as that of different external services running on them. For example, you can use Metricbeat to monitor and analyze system CPU, memory and load. In Dockerized environments, Metricbeat can be installed on a host for monitoring container performance metrics.
+
+Metricbeat can also be configured to ship to a messaging or queuing buffer such as Kafka or Redis.
+
+
+To enable dashboard loading, add the following setting to the config file:
+...................................................................
+setup.dashboards.enabled: true
+
+from the command prompt:
+........................
+
+metricbeat.exe setup --dashboards
+
+
+metricbeat.exe modules enable mongodb
+
+
+Module configuration
+General settings
+Output configuration
+Processor configuration
+Path configuration
+Dashboard configuration
+Logging configuration
+
+Metricbeat inputs:
+.................
+
+ 
+Disabled:
+aerospike
+apache
+ceph
+couchbase
+docker
+dropwizard
+elasticsearc
+etcd
+golang
+graphite
+haproxy
+http
+jolokia
+kafka
+kibana
+kubernetes
+logstash
+memcached
+mongodb
+mysql
+nginx
+php_fpm
+postgresql
+prometheus
+rabbitmq
+redis
+uwsgi
+vsphere
+windows
+zookeeper
+
+
+we can specify below outputs for MetricBeat:
+
+Elasticsearch
+Logstash
+Kafka
+Redis
+File
+Console
+Cloud
+
+
+Winlogbeat:
+..........
+
+
+Loaded system logs and application security logs using Winlogbeat
+
+Index name is:winlogbeat-6.2.3-2018.06.19
+
+Winlogbeat is our lightweight shipper for Windows event logs. It installs and runs as a Windows service and ships event log data to Elasticsearch or Logstash.
+
+Input:
+........
+winlogbeat.event_logs:
+  - name: Application
+    ignore_older: 72h
+  - name: Security
+  - name: System
+
+we can specify below outputs for Winlogbeat:
+
+Elasticsearch
+Logstash
+Kafka
+Redis
+File
+Console
+Cloud
+
+

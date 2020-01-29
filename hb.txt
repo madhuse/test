@@ -1,0 +1,140 @@
+hibernate uses;
+1).Hibernate has capability to generate primary keys automatically while we are storing the records into database
+
+2.)hibernate query language which is database independent
+
+3.)Hibernate supports annotations, apart from XML
+
+4.)While we are inserting any record, if we don’t have any particular table in the database, 
+
+ JDBC will rises an error like “View not exist”, and throws exception, but in case of hibernate, 
+
+ if it not found any table in the database this will create the table for us 
+
+
+
+
+one cfg file for one db
+
+one SessionFactory object for one db
+
+A Session is used to get a physical connection with a database. 
+
+
+<property name="hbm2ddl.auto">update</property>
+
+
+<property name="hibernate.hbm2ddl.auto">create</property>
+
+
+PostgreSQL	org.hibernate.dialect.PostgreSQLDialect
+
+
+generators
+..........
+increment, hilo, sequence, native ,assigned
+
+
+Here <property name=”hbm2ddl.auto”>create</property> means schema DDL created every time when SessionFactory Object is created.
+
+http://www.java4s.com/hibernate/part-4-hibernate-query-language-using-hql-select-query/
+
+
+http://www.waytoeasylearn.com/2016/06/hibernate-generator-classes.html
+
+Sequence(not in mysql)
+
+Assigned(All)
+
+Increments(All but db dependent)
+
+Identity(oracle not)
+
+
+In order to over come tight coupling between objects, spring framework uses dependency injection mechanism
+
+ with the help of POJO/POJI model and through dependency injection its possible to achieve loose coupling
+
+com.mysql.jdbc.Driver
+
+jdbc:mysql://localhost:3306/abcd
+
+values('"+s.getName()+"',"+s.getId()+",'"+s.getDesignation()+"')";  
+
+CREATE TABLE employeedata1(
+    id int NOT NULL AUTO_INCREMENT,
+    name varchar(255),
+    designation varchar(255),
+    project varchar(255),
+    projectLocation varchar(255),
+    technology varchar(255),
+    deptName varchar(255),
+    PRIMARY KEY (id)
+ 
+     
+);
+
+http://javabeat.net/integrating-spring-framework-with-hibernate-orm-framework/
+
+https://howtodoinjava.com/spring/spring-orm/spring-3-and-hibernate-integration-tutorial-with-example/
+
+https://www.journaldev.com/3524/spring-hibernate-integration-example-tutorial
+
+http://www.codejava.net/frameworks/spring/spring-mvc-with-jdbctemplate-example
+
+https://www.java2blog.com/spring-mvc-hibernate-mysql-crud-example/
+
+https://stackoverflow.com/questions/23653301/error-setting-property-values-nested-exception-is-org-springframework-beans-not
+
+
+  settings.put(Environment.DRIVER, "org.postgresql.Driver");
+            settings.put(Environment.URL, "jdbc:postgresql://localhost:5432/BORAJI");
+            settings.put(Environment.USER, "postgres");
+            settings.put(Environment.PASS, "admin");
+            settings.put(Environment.DIALECT, "org.hibernate.dialect.PostgreSQL9Dialect
+
+
+CREATE TABLE Persons (
+    ID int NOT NULL AUTO_INCREMENT,
+    LastName varchar(255) NOT NULL,
+    FirstName varchar(255),
+    Age int,
+    PRIMARY KEY (ID)
+);
+ALTER TABLE Persons AUTO_INCREMENT=100;
+
+
+
+update reset
+
+to delete ask are u sure
+registration reset
+pagination in dynamic
+
+
+https://blog.2ndquadrant.com/using-hibernate-query-language-hql-with-postgresql/
+
+
+...........................................................................
+
+
+@Entity	               This annotation specifies to declare the class as entity or a table.
+@Table	                This annotation specifies to declare table name.
+@Basic	                This annotation specifies non constraint fields explicitly.
+@Embedded	       This annotation specifies the properties of class or an entity whose value instance of an embeddable class.
+@Id	              This annotation specifies the property, use for identity (primary key of a table) of the class.
+@GeneratedValue	     This annotation specifies, how the identity attribute can be initialized such as Automatic, manual, or value taken from sequence table.
+@Transient	     This annotation specifies the property which in not persistent i.e. the value is never stored into database.
+@Column	            This annotation is used to specify column or attribute for persistence property.
+@SequenceGenerato  This annotation is used to define the value for the property which is specified in @GeneratedValue annotation. It creates a sequence.
+@TableGenerator	  This annotation is used to specify the value generator for property specified in @GeneratedValue annotation. It creates a table for value generation.
+@AccessType	 This type of annotation is used to set the access type. If you set @AccessType(FIELD) then Field wise access will occur. If you set @AccessType(PROPERTY) then Property wise assess will occur.
+@JoinColumn	 This annotation is used to specify an entity association or entity collection. This is used in many- to-one and one-to-many associations.
+@UniqueConstraint	This annotation is used to specify the field, unique constraint for primary or secondary table.
+@ColumnResult	 This annotation references the name of a column in the SQL query using select clause.
+@ManyToMany	 This annotation is used to define a many-to-many relationship between the join Tables.
+@ManyToOne	  This annotation is used to define a many-to-one relationship between the join Tables.
+@OneToMany	This annotation is used to define a one-to-many relationship between the join Tables.
+@OneToOne	This annotation is used to define a one-to-one relationship between the join Tables.
+@NamedQueries	This annotation is used for specifying list of named queries.
+@NamedQuery	This annotation is used for specifying a Query using static name.

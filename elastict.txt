@@ -1,0 +1,2192 @@
+web search engine
+
+voter analysis
+
+log analysis
+
+easy
+
+
+
+Distributed searching:
+..................
+ is the capability to search across multiple computers. A typical searching system indexes the data on a single computer. Users will search on the computer and the search system will respond with results from a single computer. In distributed search, users still search the same way. The search system sends the request to all the computers which are part of the distributed search system. The computers send the result back to the main computer and the main computer compiles a single result and sends it back to the user. The whole search experience is exactly the same for the end user. Distributed searching ensures that a collection of independent computers appears like one single solution.
+
+Benefits of Distributed Searching in Email Archiving
+The distributed technology is not new. The World Wide Web is the biggest example of distributed system. Other examples are the Internet, Intranet, search engines, and more. There are many benefits of distributed systems:
+
+Reliability: All computers are independent of each other. If one computer crashes the system will still survive. Distributed systems improve the reliability by higher availability.
+
+Cost Effective: The bigger the computer system the higher the cost and complexity. With a distributed system, low cost computer systems are added, which is overall cost effective.
+
+Incremental Growth: The system can grow by aligning itself with processing power requirements and storage needs. Distributed systems provide the ability to have a modular system and grow incrementally.
+
+Resource Sharing: One of the biggest benefits of the distributed system is resource sharing. The work is shared between the independent computer nodes which keeps the overall performance of the distributed system optimal.
+..................................
+
+Before I start, let’s recap on some Elasticsearch terminology: an Elasticsearch cluster is made up of one or more nodes. Each of these nodes contains indexes which are split into multiple shards. Elasticsearch makes copies of these shards called replicas. These (primary) shards and replicas are then placed on various nodes throughout the cluster.
+
+Got it? Great.
+
+To check the health of your cluser, we can use the Cluster Health API.
+
+curl -XGET http://localhost:9200/_cluster/health?pretty=true
+
+    {
+      "cluster_name" : "asgard",
+      "status" : "yellow",
+      "timed_out" : false,
+      "number_of_nodes" : 1,
+      "number_of_data_nodes" : 1,
+      "active_primary_shards" : 5,
+      "active_shards" : 5,
+      "relocating_shards" : 0,
+      "initializing_shards" : 0,
+      "unassigned_shards" : 5
+    }
+Elasticsearch provides a handy "traffic lights" classification of cluster health. Here is a simple explanation of each of the options.
+
+ RED: Damnit. Some or all of (primary) shards are not ready.
+
+ YELLOW: Elasticsearch has allocated all of the primary shards, but some/all of the replicas have not been allocated.
+
+ GREEN: Great. Your cluster is fully operational. Elasticsearch is able to allocate all shards and replicas to machines within the cluster.
+
+
+
+..............
+http://javasampleapproach.com/elasticsearch:
+1.Document Api
+
+2.Aggregations
+
+3.Query dsl
+
+4.Mappings
+
+5.Analysis
+
+Queries like the match or query_string queries are high-level queries
+
+Queries like the term or fuzzy queries are low-level queries
+
+Elasticsearch is a highly scalable open-source full-text search and analytics engine. It allows you to store, search, and analyze big volumes of data quickly and in near real time. It is generally used as the underlying engine/technology that powers applications that have complex search features and requirements.
+
+Here are a few sample use-cases that Elasticsearch could be used for:
+
+You run an online web store where you allow your customers to search for products that you sell. In this case, you can use Elasticsearch to store your entire product catalog and inventory and provide search and autocomplete suggestions for them.
+
+Cluster
+......
+A cluster is a collection of one or more nodes (servers) that together holds your entire data and provides federated indexing and search capabilities across all nodes. A cluster is identified by a unique name which by default is "elasticsearch". This name is important because a node can only be part of a cluster if the node is set up to join the cluster by its name.
+
+
+Node:
+......
+A node is a single server that is part of your cluster, stores your data, and participates in the cluster’s indexing and search capabilities. Just like a cluster, a node is identified by a name which by default is a random Marvel character name that is assigned to the node at startup
+Document:
+A document is a basic unit of information that can be indexed. For example, you can have a document for a single customer, another document for a single product, and yet another for a single order. This document is expressed in JSON (JavaScript Object Notation) which is an ubiquitous internet data interchange format.
+
+Shards and Replicas: 
+......................
+Elastic Search indexes are divided into multiple pieces called shards, which allows the index to split horizontally. Elastic Search also allows us to make copies of index shards, which are called replicas.
+
+
+An index can potentially store a large amount of data that can exceed the hardware limits of a single node. For example, a single index of a billion documents taking up 1TB of disk space may not fit on the disk of a single node or may be too slow to serve search requests from a single node alone.
+
+To solve this problem, Elasticsearch provides the ability to subdivide your index into multiple pieces called shards. When you create an index, you can simply define the number of shards that you want. Each shard is in itself a fully-functional and independent "index" that can be hosted on any node in the cluster.
+
+Sharding is important for two primary reasons:
+
+It allows you to horizontally split/scale your content volume
+It allows you to distribute and parallelize operations across shards (potentially on multiple nodes) thus increasing performance/throughput
+The mechanics of how a shard is distributed and also how its documents are aggregated back into search requests are completely managed by Elasticsearch and is transparent to you as the user.
+
+
+
+match query is mainly used for text search ,matches if one term matches(The standard query for performing full text queries, including fuzzy matching and phrase or proximity queries.) by default analyzer is applied
+
+multi-match query(multi-field query):
+......................................
+
+POST /bookdb_index/book/_search
+{
+    "query": {
+        "multi_match" : {
+            "query": "search engine",
+            "fields": ["title", "summary"],
+TErm query:
+...........
+the term-level queries operate on the exact terms that are stored in the inverted index.
+
+by default analyzer is not applied
+Terms query:
+...........
+
+for terms query we can give one filed and match two values(terms).
+{
+    "query": {
+        "terms" : {
+            "publisher": ["oreilly", "packt"]
+        }
+    }
+}
+
+The inverted index maps terms to documents (and possibly positions in the documents) containing the term.
+.....................................
+BOOSTING:
+............
+
+Boosting can be added to any term or field specified in the query when there is more than one. For example, in our query above where we searched for "godfather" in the title field and 1974 in the year field, we could add boosting to the title field, indicated by the carat ^ special character, to increase the scores of documents found with that match so they would be ranked higher than matches with the year field. Here's how that example could look, where we're doubling the significance of matches to "godfather" in the title field by boosting by 2: 
+
+
+Fuzziness :
+................
+Fuzziness is set to "AUTO" by default, which means that up to a maximum of 2 characters in a term may be replaced, removed or added, but the behavior is based on the length of the term specified in the query. For example, for a term with 0-2 characters, an exact match is required. For a term with 3-5 characters, then only 1 character may be be replaced, removed or added. You can indicate fuzziness for a term by using the ~ special character next to it and optionally setting the number of characters you'd like to try changing, which will override the default setting. An example would look like this: q=man~1. Here we're searching for the term "man", but we're allowing for fuzziness for up to a 1 character change, so matches to terms like the following are possible: man, max, min, can, men, mad. By default up to 50 alternates will be generated for fuzzy matching.
+
+Proximity :
+...........
+Proximity for a phrase can be indicated by using the ~ special character with a number indicating the allowable slop. For example, we used the phrase "godfather part" in one of our examples above to search for an exact match on the phrase. We can use slop to set the number of words that are allowed between the terms in our phrase. By doing so, the proximity of the terms becomes becomes a mechanism for matching and scoring. We can set the slop like this: q=%22godfather%20part%22~5. Notice the ~5 at the end of the phrase query. This will allow us to find any documents where the terms "godfather" and "part" are within 5 words of each other. Also, because we haven't specified a field here for our query, the _all field will be used. Due to the concatenation of field values in the _all field, which we mentioned above, we could potentially find a match to "godfather" in one field and "part" in another field, which just happen to be concatenated within 5 words of each other in the _all field. Just something to take into consideration when deciding whether to specify fields in your query or not.
+
+
+
+“Text” data types —
+.....................
+ Use when you require full-text search for particular fields such as the bodies of e-mails or product descriptions
+
+“Keyword” data types —
+.........................
+ Use when you require an exact-value search, particularly when filtering (“Find me all products where status is available”), sorting, or using aggregations. Keyword fields are only searchable by their exact value. Use keyword data types when you have fields like email addresses, hostnames, status codes, zip codes, or tags
+
+
+
+WILDCARD:
+..........
+Matches documents that have fields matching a wildcard expression (not analyzed). Supported wildcards are *, which matches any character sequence (including the empty one), and ?, which matches any single character.
+
+
+RANGE QUERY:
+Matches documents with fields that have terms within a certain range. The type of the Lucene query depends on the field type, for string fields, the TermRangeQuery, while for number/date fields, the query is a NumericRangeQuery. The following example returns all documents where age is between 10 and 20:
+
+
+
+Bucket aggregations are mechanisms for grouping documents INTO BUCKETS.
+
+INDEX==DATABASE NAME
+MAPPING==TABLENAME 
+JSONOBJECT=TUPLE
+
+Shards: A subset of Documents of an Index. An Index can be divided into many shards.
+
+
+Manages the huge amount of data: As a comparison to the traditional SQL database management systems that take more than 10 seconds to fetch required search query data, Elasticsearch can do that within 10 ms.
+
+
+
+ (Elasticsearch) is a document-oriented database, designed to store, retrieve and manage document oriented or semi-structured data
+METRIC AGGS:
+.................
+Aggregations that keep track and compute metrics over a set of documents.
+
+
+
+PIPELINE AGGS:
+Aggregations that aggregate the output of other aggregations and their associated metrics
+
+ELASTICSEARCH FAST:
+..................
+Full text searches will be extremely fast because the documents are stored in close proximity to the corresponding metadata in the index. This design greatly reduces the number of data reads, and ES limits the index growth rate by keeping it compressed.
+
+Analysis:
+...........
+Analysis is a process that consists of the following:
+
+First, tokenizing a block of text into individual terms suitable for use in an inverted index,
+Then normalizing these terms into a standard form to improve their “searchability,” or recall
+
+This job is performed by analyzers. An analyzer is really just a wrapper that combines three functions into a single package:
+
+ANALYZERS:
+.........
+In Lucene, anayzer is a combination of tokenizer (splitter) + stemmer + stopword filter
+An analyzer is used at index Time and at search Time. It's used to create an index of terms.
+
+To index a phrase, it could be useful to break it in words. Here comes the analyzer.
+
+WHEN ANALYZERS ARE USED:
+.........................
+When we index a document, its full-text fields are analyzed into terms that are used to create the inverted index. However, when we search on a full-text field, we need to pass the query string through the same analysis process, to ensure that we are searching for terms in the same form as those that exist in the index.
+
+Full-text queries, which we discuss later, understand how each field is defined, and so they can do the right thing:
+
+When you query a full-text field, the query will apply the same analyzer to the query string to produce the correct list of terms to search for.
+When you query an exact-value field, the query will not analyze the query string, but instead search for the exact value that you have specified.
+
+
+INVERTED INDEX:
+..............
+
+Elasticsearch uses a structure called an inverted index, which is designed to allow very fast full-text searches. An inverted index consists of a list of all the unique words that appear in any document, and for each word, a list of the documents in which it appears.
+
+For example, let’s say we have two documents, each with a content field containing the following:
+
+The quick brown fox jumped over the lazy dog
+Quick brown foxes leap over lazy dogs in summer
+
+To create an inverted index, we first split the content field of each document into separate words (which we call terms, or tokens), create a sorted list of all the unique terms, and then list in which document each term appears. The result looks something like this:
+
+
+ELASTI SEARCH SECURITY:
+......................
+ReadonlyREST:
+...........
+ReadonlyREST plugin for Elasticsearch is available on Github. It provides different types of authentication, from basic to LDAP, as well as index- and operation-level access control.
+
+SEARCH GUARD:
+...........
+SearchGuard is a free security plugin for Elasticsearch including role based access control and SSL/TLS encrypted node-to-node communication.
+
+X-Pack security:
+................
+
+ The Elastic Stack now has X-Pack security, a product which provides comprehensive security for Elasticsearch, including encrypted communications, role-based access control, AD/LDAP integration and Auditing. 
+ELASTIC SEARCH SCALLABLE:
+........................
+
+One of the great features of Elasticsearch is that it's designed from the ground up to be horizontally scalable, meaning that by adding more nodes to the cluster you're capable to grow the capacity of the cluster
+
+as opposed to vertical scalability that requires you to have bigger machines to be able to grow your 
+
+
+DIFF BETWEEN BOOL QUERY AND FILTER QUERY:
+.....................................
+must contributes to the score. In filter, the score of the query is ignored.
+
+constant_score:
+................
+constant_score query assigns a score of 1.0 to all documents matched by the filter.
+
+A query that wraps another query and simply returns a constant score equal to the query boost for every document in the filter
+
+
+BOOL QUERY:
+..........
+A query that matches documents matching boolean combinations of other queries.
+
+
+dis_max query:
+............
+A query which accepts multiple queries, and returns any documents which match any of the query clauses. While the bool query combines the scores from all matching queries, the dis_max query uses the score of the single best- matching query clause.
+
+
+dis_max query:
+..............
+A query which accepts multiple queries, and returns any documents which match any of the query clauses. While the bool query combines the scores from all matching queries, the dis_max query uses the score of the single best- matching query clause.
+
+
+boosting query:
+.............
+Return documents which match a positive query, but reduce the score of documents which also match a negative query.
+
+
+nested query:
+............
+Documents may contain fields of type nested. These fields are used to index arrays of objects, where each object can be queried (with the nested query) as an independent document.
+
+
+Significant term aggregations:
+.............................
+Significant term aggregations means when we query for something getting the relevant data also.
+If we search for bird flu suggesting H5N1 as a result.
+
+There are many other special bucket aggregations, which are useful in many other cases, those are -
+
+Date Histogram Aggregation
+Date Range Aggregation
+Filter Aggregation
+Filters Aggregation
+Geo Distance Aggregation
+GeoHash grid Aggregation
+Global Aggregation
+Histogram Aggregation
+IPv4 Range Aggregation
+Missing Aggregation
+Nested Aggregation
+Range Aggregation
+Reverse nested Aggregation
+Sampler Aggregation
+Significant Terms Aggregation
+Terms Aggregation
+
+
+
+1. MISSING AGGREGATION:
+  ....................
+
+MISSING AGGREGATION is used to get the null(N/A) values in a particular field count in an index. 
+
+A field data based single bucket aggregation, that creates a bucket of all documents in the current document set context that are missing a field value 
+
+(effectively, missing a field or having the configured NULL value set).
+
+
+The following aggregation is used to get the maodel_name field null values count.
+
+GET icjsnic/_search
+{
+    "size": 0, 
+    "aggs" : {
+        "null value count" : {
+            "missing" : { "field" : "model_name.keyword" }
+        }
+    }
+}
+
+
+
+THE Response is below:
+
+"took": 26,
+   "timed_out": false,
+   "_shards": {
+      "total": 5,
+      "successful": 5,
+      "failed": 0
+   },
+   "hits": {
+      "total": 254607,
+      "max_score": 0,
+      "hits": []
+   },
+   "aggregations": {
+      "null value count": {
+         "doc_count": 11
+      }
+   }
+}
+
+The above responce showing is null value count is:11
+
+
+ REVERSED NESTED AGGREGATIONS:
+..............................
+
+ Its sole purpose is to join back to a parent doc higher up in the nested structure.
+
+
+
+Similar to the nested aggregator, but in reverse. It allows to create buckets and metrics based on the parent docs in the buckets of child documents.
+
+This aggregation only makes sense inside a nested aggregator. Assume a ticket system with where the comments are embedded into the issue document.
+
+ The reverse_nested aggregator would look like this:
+
+"aggs" : {
+   "top_commenters_to_issues" : {
+        "nested" : {"path" : "comments"},
+        "aggs" : {
+            "top_commenters" : {
+                "terms" : { "field" : "username" },
+                "aggs" : {
+                    "top_tags_to_comments" : {
+                        "reverse_nested" : {
+                            "path" : "comments"
+                        },
+                        "aggs" : {
+                            "top_tags" : { "terms" : { "field" :  "tags"}}
+                        }    
+                    }
+                }
+            }
+        }
+    }
+}
+This aggregation would return top username buckets and per username bucket the top tags.
+
+
+ The important constraint that the nested and reverse_nested add here is that only tag buckets are associated to username buckets that reside in the nested structure.
+
+
+{
+  "aggregations": {
+    "comments": {
+      "top_usernames": {
+        "buckets": [
+          {
+            "key": "username_1",
+            "doc_count": 12,
+            "comment_to_issue": {
+              "top_tags_per_comment": {
+                "buckets": [
+                  {
+                    "key": "tag1",
+                    "doc_count": 9
+                  },
+                  ...
+                ]
+              }
+            }
+          },
+          ...
+        ]
+      }
+    }
+  }
+}
+
+
+
+
+
+
+GEO DISTANCE AGGREGATIONS:
+..........................
+
+
+By using Geo distance aggs we can get the documents based certain distance from our location. 
+
+Here we need to give lat/lang for our location then give some distance range then we get the documents.
+
+For that we have to do explicit  mappings,it wont take it as a default mappings.like this.
+
+
+PUT /icjs
+{
+    "mappings": {
+        "otsi": {
+            "properties": {
+                "location": {
+                    "type": "geo_point"
+                }
+            }
+        }
+    }
+}
+
+
+
+
+POST /icjs/_search?size=0
+{
+    "aggs" : {
+        "myaggs" : {
+            "geo_distance" : {
+                "field" : "location",
+                "origin" : "52.3760, 4.894",
+                 "unit"   :"km",
+             "distance_type" : "plane",
+                "ranges" : [
+                    { "to" : 2000 },
+                    { "from" : 2000, "to" : 4000 },
+                    { "from" : 4000 }
+                ]
+            }
+        }
+    }
+}
+
+
+above query specifies the distance range from 0-2000,and 2000-4000,and 4000- end w
+
+Responce is below:
+
+{
+    ...
+    "aggregations": {
+        "myaggs" : {
+            "buckets": [
+                {
+                    "key": "*-2000.0",
+                    "from": 0.0,
+                    "to": 2000.0,
+                    "doc_count": 3
+                },
+                {
+                    "key": "2000.0-4000.0",
+                    "from": 2000.0,
+                    "to": 4000.0,
+                    "doc_count": 1
+                },
+                {
+                    "key": "4000.0-*",
+                    "from": ,
+                    "doc_count": 2
+                }
+            ]
+        }
+    }
+}
+
+above we are getting documents from  0-2000km doc count is 3,from 2000-4000km doc count is:1,from 4000km-end doc count is:2
+
+
+
+
+
+
+
+
+
+
+
+
+Pipeline Aggregations don’t support sub-aggregations but they do support chaining, thus in a chain of pipeline aggregations the final output contains the output of each aggregation in the chain. In order to reference the aggregation which would be computed upon in a pipeline, the keyword used is “buckets_path” . The syntax is as follows –
+
+“”buckets_path”: “Aggs>Metric””
+
+
+PIPELINE AGGREGATIONS:
+......................
+
+Elastic search pipeline aggregations are added at elastic version 2.0.0
+
+Pipeline aggregations work on the outputs produced from other aggregations rather than from document sets, adding information to the output tree.
+
+There are many different types of pipeline aggregation, each computing different information from other aggregations.
+
+but these types can be broken down into two families:
+
+
+ 1.Pipeline Aggregations don’t support sub-aggregations but they do support chaining, "thus in a chain of pipeline aggregations
+
+ 2.the final output contains the output of each aggregation in the chain.  the keyword used is “buckets_path” .
+..............................................................................................................
+
+ 3. Parent – A pipeline aggregation computes it’s output (bucket/aggregation) and this output gets added to the bucket/aggregation of the parent aggregation.
+
+   (Examples:Derivative Aggregation ,Cumulative Sum Derivative)
+
+ 4. Sibling – An existing aggregation becomes an input of a pipeline of aggregations and you get new aggregations at the same level as the sibling aggregation .
+
+ instead of it becoming part existing buckets on the input aggregations.
+
+ (Examples:Maximum and Minimum bucket aggregations, Average Bucket Aggregation )
+
+This aggregation is a parent aggregation as the computed derivative of the specified metric becomes part of the bucket of the input aggregation.
+
+
+
+To do the bucket aggregations i have created index named cars and doc type is transactions is as follows
+
+
+POST /cars/transactions/_bulk
+{ "index": {}}
+{ "price" : 10000, "color" : "red", "make" : "honda", "sold" : "2014-10-28" }
+{ "index": {}}
+{ "price" : 20000, "color" : "red", "make" : "honda", "sold" : "2014-11-05" }
+{ "index": {}}
+{ "price" : 30000, "color" : "green", "make" : "ford", "sold" : "2014-05-18" }
+{ "index": {}}
+{ "price" : 15000, "color" : "blue", "make" : "toyota", "sold" : "2014-07-02" }
+{ "index": {}}
+{ "price" : 12000, "color" : "green", "make" : "toyota", "sold" : "2014-08-19" }
+{ "index": {}}
+{ "price" : 20000, "color" : "red", "make" : "honda", "sold" : "2014-11-05" }
+{ "index": {}}
+{ "price" : 80000, "color" : "red", "make" : "bmw", "sold" : "2014-01-01" }
+{ "index": {}}
+{ "price" : 25000, "color" : "blue", "make" : "ford", "sold" : "2014-02-12" }
+{ "price" : 20000, "color" : "black", "make" : "Audi", "sold" : "2014-09-28" }
+{ "index": {}}
+{ "price" : 20000, "color" : "red", "make" : "Audi", "sold" : "2014-12-05" }
+{ "index": {}}
+{ "price" : 30000, "color" : "green", "make" : "ford", "sold" : "2014-03-18" }
+{ "index": {}}
+{ "price" : 5000, "color" : "blue", "make" : "Tata", "sold" : "2014-07-02" }
+{ "index": {}}
+{ "price" : 7000, "color" : "green", "make" : "Tata", "sold" : "2014-09-19" }
+{ "index": {}}
+{ "price" : 20000, "color" : "red", "make" : "Audi", "sold" : "2014-05-05" }
+{ "index": {}}
+{ "price" : 80000, "color" : "red", "make" : "bmw", "sold" : "2014-01-01" }
+{ "index": {}}
+{ "price" : 25000, "color" : "blue", "make" : "honda", "sold" : "2014-01-12" }
+
+Now lets find out the pipeline aggregations:
+
+Average Bucket Aggregation:
+...........................
+
+ This is sibling aggregation as it calculates the avg. of a metric of a specified metric in a sibling aggregation.
+
+ The sibling aggregation must be multi-bucket i.e. it should have multiple grouped values for a certain field (grouping of cars based on sold monthly).
+
+ Now each group can have it’s total sales per month and with the help of avg. bucket pipleline aggregation we can calculate the average total monthly sales.
+
+
+
+EXAMPLES FOR SIBBLING AGGREGATIONS:
+....................................
+
+ GET /cars/transactions/_search?search_type=count
+{
+   "aggs":{
+      "sales_per_month":{
+         "date_histogram":{
+            "field":"sold",
+            "interval":"month",
+            "format":"yyyy-MM-dd"
+         },
+         "aggs":{
+            "monthly_sum":{
+               "sum":{
+                  "field":"price"
+               }
+            }
+         }
+      },
+      "avg_monthly_sales":{
+         "avg_bucket":{
+            "buckets_path":"sales_per_month>monthly_sum"
+         }
+      }
+   }
+}
+
+
+
+Now we are calculating the average of monthly total in sales and the key syntax is the expression
+
+“buckets_path”: “sales_per_month>monthly_sum”
+
+Here the aggregation , “sales_per_month” and it’s metric “monthly_sum “is specified using the buckets_path syntax and this aggregation of “sales_per_month” 
+
+gives us the sum of prices of cars sold on monthly basis and the sibling aggregation “avg_monthly_sale” generate the aggregation value of average total monthly sales.
+
+
+
+
+
+"took": 899,
+   "timed_out": false,
+   "_shards": {
+      "total": 5,
+      "successful": 5,
+      "failed": 0
+   },
+   "hits": {
+      "total": 16,
+      "max_score": 0,
+      "hits": []
+   },
+   "aggregations": {
+      "sales_per_month": {
+         "buckets": [
+            {
+               "key_as_string": "2014-01-01",
+               "key": 1388534400000,
+               "doc_count": 3,
+               "monthly_sum": {
+                  "value": 185000
+               }
+            },
+            {
+               "key_as_string": "2014-02-01",
+               "key": 1391212800000,
+               "doc_count": 1,
+               "monthly_sum": {
+                  "value": 25000
+               }
+            },
+            {
+              
+            },
+            {
+               "key_as_string": "2014-11-01",
+               "key": 1414800000000,
+               "doc_count": 2,
+               "monthly_sum": {
+                  "value": 40000
+               }
+            },
+            {
+               "key_as_string": "2014-12-01",
+               "key": 1417392000000,
+               "doc_count": 1,
+               "monthly_sum": {
+                  "value": 20000
+               }
+            }
+         ]
+      },
+      "avg_monthly_sales": {
+         "value": 41900
+      }
+   }
+}
+
+
+
+
+
+Maximum bucket aggregations:
+........................................
+
+Just like average bucket aggregation, both Max and Min. bucket aggregations are sibling aggregation which are producing the output aggregation in parallel to the i
+
+nput aggregation in our case being “sales_per”month”. Max. and min. pipeline aggregation were eagerly awaited  by ES users as now it becomes straightforward to 
+
+find the bucket with a max. or min. value based on the metric. In our previous example if we replace “avg_monthly_sale”.
+
+
+"took": 149,
+   "timed_out": false,
+   "_shards": {
+      "total": 5,
+      "successful": 5,
+      "failed": 0
+   },
+   "hits": {
+      "total": 16,
+      "max_score": 0,
+      "hits": []
+   },
+   "aggregations": {
+      "sales_per_month": {
+         "buckets": [
+            {
+               "key_as_string": "2014-01-01",
+               "key": 1388534400000,
+               "doc_count": 3,
+               "monthly_sum": {
+                  "value": 185000
+               }
+            },
+            {
+               "key_as_string": "2014-02-01",
+               "key": 1391212800000,
+               "doc_count": 1,
+               "monthly_sum": {
+                  "value": 25000
+               }
+            },
+            
+            {
+               "key_as_string": "2014-11-01",
+               "key": 1414800000000,
+               "doc_count": 2,
+               "monthly_sum": {
+                  "value": 40000
+               }
+            },
+            {
+               "key_as_string": "2014-12-01",
+               "key": 1417392000000,
+               "doc_count": 1,
+               "monthly_sum": {
+                  "value": 20000
+               }
+            }
+         ]
+      },
+      "avg_monthly_sales": {
+         "value": 185000,
+         "keys": [
+            "2014-01-01"
+         ]
+      }
+   }
+}
+
+
+
+MIN BUCKET AGGREGATIONS:
+.......................
+
+
+GET /cars/transactions/_search
+{
+    "size": 0, 
+   "aggs":{
+      "sales_per_month":{
+         "date_histogram":{
+            "field":"sold",
+            "interval":"month",
+            "format":"yyyy-MM-dd"
+         },
+         "aggs":{
+            "monthly_sum":{
+               "sum":{
+                  "field":"price"
+               }
+            }
+         }
+      },
+      "avg_monthly_sales":{
+         "min_bucket":{
+            "buckets_path":"sales_per_month>monthly_sum"
+         }
+      }
+   }
+}
+
+RESPONCE IS BELOW:
+..................
+
+{
+   "took": 68,
+   "timed_out": false,
+   "_shards": {
+      "total": 5,
+      "successful": 5,
+      "failed": 0
+   },
+   "hits": {
+      "total": 16,
+      "max_score": 0,
+      "hits": []
+   },
+   "aggregations": {
+      "sales_per_month": {
+         "buckets": [
+            {
+               "key_as_string": "2014-01-01",
+               "key": 1388534400000,
+               "doc_count": 3,
+               "monthly_sum": {
+                  "value": 185000
+               }
+            },
+            {
+               "key_as_string": "2014-02-01",
+               "key": 1391212800000,
+               "doc_count": 1,
+               "monthly_sum": {
+                  "value": 25000
+               }
+            },
+            {
+               "key_as_string": "2014-03-01",
+               "key": 1393632000000,
+               "doc_count": 1,
+               "monthly_sum": {
+                  "value": 30000
+               }
+            },
+           
+            },
+            {
+               "key_as_string": "2014-11-01",
+               "key": 1414800000000,
+               "doc_count": 2,
+               "monthly_sum": {
+                  "value": 40000
+               }
+            },
+            {
+               "key_as_string": "2014-12-01",
+               "key": 1417392000000,
+               "doc_count": 1,
+               "monthly_sum": {
+                  "value": 20000
+               }
+            }
+         ]
+      },
+      "avg_monthly_sales": {
+         "value": 10000,
+         "keys": [
+            "2014-10-01"
+         ]
+      }
+   }
+}
+
+
+EXAMPLES FOR PARENT TYPE :
+..........................
+
+Derivative Aggregation:
+.......................
+
+This aggregation is a parent aggregation as the computed derivative of the specified metric becomes part of the bucket of the input aggregation.
+
+
+GET /cars/transactions/_search?search_type=count
+{
+   "aggs": {
+      "sales_per_month": {
+         "date_histogram": {
+            "field": "sold",
+            "interval": "month",
+            "format": "yyyy-MM-dd"
+         },
+         "aggs": {
+            "monthly_sum": {
+               "sum": {
+                  "field": "price"
+               }
+            },
+            "sales_deriv": {
+               "derivative": {
+                  "buckets_path": "monthly_sum"
+               }
+            }
+         }
+      }
+   }
+}
+
+
+
+
+Responce is below:
+..................
+
+{
+   "took": 45,
+   "timed_out": false,
+   "_shards": {
+      "total": 5,
+      "successful": 5,
+      "failed": 0
+   },
+   "hits": {
+      "total": 16,
+      "max_score": 0,
+      "hits": []
+   },
+   "aggregations": {
+      "sales_per_month": {
+         "buckets": [
+            {
+               "key_as_string": "2014-01-01",
+               "key": 1388534400000,
+               "doc_count": 3,
+               "monthly_sum": {
+                  "value": 185000
+               }
+            },
+            {
+               "key_as_string": "2014-02-01",
+               "key": 1391212800000,
+               "doc_count": 1,
+               "monthly_sum": {
+                  "value": 25000
+               },
+               "sales_deriv": {
+                  "value": -160000
+               }
+            },
+            {
+               "key_as_string": "2014-03-01",
+               "key": 1393632000000,
+               "doc_count": 1,
+               "monthly_sum": {
+                  "value": 30000
+               },
+               "sales_deriv": {
+                  "value": 5000
+               }
+            },
+            {
+               "key_as_string": "2014-04-01",
+               "key": 1396310400000,
+               "doc_count": 0,
+               "monthly_sum": {
+                  "value": 0
+               },
+               "sales_deriv": {
+                  "value": null
+               }
+            },
+            
+            {
+               "key_as_string": "2014-11-01",
+               "key": 1414800000000,
+               "doc_count": 2,
+               "monthly_sum": {
+                  "value": 40000
+               },
+               "sales_deriv": {
+                  "value": 30000
+               }
+            },
+            {
+               "key_as_string": "2014-12-01",
+               "key": 1417392000000,
+               "doc_count": 1,
+               "monthly_sum": {
+                  "value": 20000
+               },
+               "sales_deriv": {
+                  "value": -20000
+               }
+            }
+         ]
+      }
+   }
+}
+
+
+For the first bucket there is no derivate as derivate needs atleast 2 points.
+
+
+Cumulative Sum Derivative:
+...........................
+
+This is another Parent pipeline aggregation and calculates the cumulative sum of the specified metric of the input aggregation. 
+
+In our case it would help in giving us the cumulative sum of the total sales over a monthly basis.
+
+
+
+GET /cars/transactions/_search
+{
+    "size": 0, 
+   "aggs": {
+      "sales_per_month": {
+         "date_histogram": {
+            "field": "sold",
+            "interval": "month",
+            "format": "yyyy-MM-dd"
+         },
+         "aggs": {
+            "monthly_sum": {
+               "sum": {
+                  "field": "price"
+               }
+            },
+            "sales_deriv": {
+               "cumulative_sum": {
+                  "buckets_path": "monthly_sum"
+               }
+            }
+         }
+      }
+   }
+}
+
+
+
+
+Response is below:
+................
+
+
+
+
+{
+   "took": 56,
+   "timed_out": false,
+   "_shards": {
+      "total": 5,
+      "successful": 5,
+      "failed": 0
+   },
+   "hits": {
+      "total": 16,
+      "max_score": 0,
+      "hits": []
+   },
+   "aggregations": {
+      "sales_per_month": {
+         "buckets": [
+            {
+               "key_as_string": "2014-01-01",
+               "key": 1388534400000,
+               "doc_count": 3,
+               "monthly_sum": {
+                  "value": 185000
+               },
+               "sales_deriv": {
+                  "value": 185000
+               }
+            },
+            {
+               "key_as_string": "2014-02-01",
+               "key": 1391212800000,
+               "doc_count": 1,
+               "monthly_sum": {
+                  "value": 25000
+               },
+               "sales_deriv": {
+                  "value": 210000
+               }
+            },
+                       },
+            {
+               "key_as_string": "2014-11-01",
+               "key": 1414800000000,
+               "doc_count": 2,
+               "monthly_sum": {
+                  "value": 40000
+               },
+               "sales_deriv": {
+                  "value": 399000
+               }
+            },
+            {
+               "key_as_string": "2014-12-01",
+               "key": 1417392000000,
+               "doc_count": 1,
+               "monthly_sum": {
+                  "value": 20000
+               },
+               "sales_deriv": {
+                  "value": 419000
+               }
+            }
+         ]
+      }
+   }
+}
+
+
+
+
+RENAME INDEX:
+...........
+First copy the index to a new name
+POST /_reindex
+{
+  "source": {
+    "index": "twitter"
+  },
+  "dest": {
+    "index": "new_twitter"
+  }
+}
+Now delete the Index
+DELETE /twitter
+
+
+Terms Aggregation:
+..................
+A multi-bucket value source based aggregation where buckets are dynamically built - one per unique value.
+
+
+
+Fielddata is disabled on text fields by default:
+...............................................
+Fielddata can consume a lot of heap space, especially when loading high cardinality text fields. Once fielddata has been loaded into the heap, it remains there for the lifetime of the segment. Also, loading fielddata is an expensive process which can cause users to experience latency hits. This is why fielddata is disabled by default.
+
+If you try to sort, aggregate, or access values from a script on a text field, you will see this exception:
+
+
+
+Meta-Fields:
+................
+Each document has metadata associated with it, such as the _index, mapping _type, and _id meta-fields. The behaviour of some of these meta-fields can be customised when a mapping type is created.
+INDEX:
+......
+An index is like a ‘database’ in a relational database. It has a mapping which defines multiple types.
+
+An Elasticsearch cluster can contain multiple Indices (databases), which in turn contain multiple Types (tables). These types hold multiple Documents (rows), and each document has Properties(columns).
+
+comparision of SQL QUERIES VS ES QUERIES:
+.........................................
+Conventional SQL database managements systems aren't really designed for full-text searches, and they certainly don't perform well against loosely structured raw data that resides outside the database. On the same hardware, queries that would take more than 10 seconds using SQL will return results in under 10 milliseconds in Elasticsearch.
+
+HOW ES WORKS:
+..............
+Indexing Documents to the Repository. During an indexing operation, Elasticsearch converts raw data such as log files or message files into internal documents and stores them in a basic data structure similar to a JSON object. ... Simply do an HTTP POST that transmits your document as a simple JSON object
+
+DYNAMIC MAPPING:
+..................
+TO INSERT data into the elasticsearch firstly u dont have to create the index and mapping type while inserting the data only we can create index and we can specify 
+the mapping type this is calls an DYNAMIC MAPPING.
+EX:
+......
+PUT data/_doc/1 
+{ "count": 5 }
+
+Dynamic field mapping:
+.................,...
+By default, when a previously unseen field is found in a document, Elasticsearch will add the new field to the type mapping. This behaviour can be disabled, both at the document and at the object level, by setting the dynamic parameter to false (to ignore new fields) or to strict (to throw an exception if an unknown field is encountered).
+
+Assuming dynamic field mapping is enabled, some simple rules are used to determine which datatype the field should have:
+
+JSON datatype
+
+Elasticsearch datatype
+
+null
+
+No field is added.
+
+true or false
+
+boolean field
+
+floating point number
+
+float field
+
+integer
+
+long field
+
+object
+
+object field
+
+array
+
+Depends on the first non-null value in the array.
+
+string
+
+Either a date field (if the value passes date detection), a double or long field (if the value passes numeric detection) or a text field, with a keyword sub-field.
+
+
+Numeric detection:
+..................
+While JSON has support for native floating point and integer datatypes, some applications or languages may sometimes render numbers as strings. Usually the correct solution is to map these fields explicitly, but numeric detection (which is disabled by default) can be enabled to do this automatically:
+
+PUT my_index
+{
+  "mappings": {
+    "_doc": {
+      "numeric_detection": true
+    }
+  }
+}
+
+PUT my_index/_doc/1
+{
+  "my_float":   "1.0", 
+  "my_integer": "1" 
+}
+COPY AS CURLVIEW IN CONSOLE 
+
+
+The my_float field is added as a double field.
+
+
+
+The my_integer field is added as a long field.
+
+
+
+
+Dynamic templates:
+....................
+Dynamic templates allow you to define custom mappings that can be applied to dynamically added fields based on:
+
+the datatype detected by Elasticsearch, with match_mapping_type.
+the name of the field, with match and unmatch or match_pattern.
+the full dotted path to the field, with path_match and path_unmatch.
+The original field name {name} and the detected datatype {dynamic_type} template variables can be used in the mapping specification as placeholders.
+
+
+ Only the following datatypes can be automatically detected: 
+boolean, date, double, long, object, string. It also accepts * to match all datatypes.
+
+For example, if we wanted to map all integer fields as integer instead of long, and all string fields as both text and keyword, we could use the following template:
+
+PUT my_index
+{
+  "mappings": {
+    "doc": {
+      "dynamic_templates": [
+        {
+          "integers": {
+            "match_mapping_type": "long",
+            "mapping": {
+              "type": "integer"
+            }
+          }
+        },
+        {
+          "strings": {
+            "match_mapping_type": "string",
+            "mapping": {
+              "type": "text",
+              "fields": {
+                "raw": {
+                  "type":  "keyword",
+                  "ignore_above": 256
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+
+PUT my_index/doc/1
+{
+  "my_integer": 5, 
+  "my_string": "Some string" 
+}
+COPY AS CURLVIEW IN CONSOLE 
+
+
+The my_integer field is mapped as an integer.
+
+
+
+The my_string field is mapped as a text, with a keyword multi field.
+
+
+
+Keyword datatype:
+................
+A field to index structured content such as email addresses, hostnames, status codes, zip codes or tags.
+
+They are typically used for filtering (Find me all blog posts where status is published), for sorting, and for aggregations. Keyword fields are only searchable by their exact value.
+
+If you need to index full text content such as email bodies or product descriptions, it is likely that you should rather use a text field.
+
+Below is an example of a mapping for a keyword field:
+
+PUT my_index
+{
+  "mappings": {
+    "_doc": {
+      "properties": {
+        "tags": {
+          "type":  "keyword"
+        }
+      }
+    }
+  }
+}
+
+
+https://www.elastic.co/guide/en/logstash/current/pipeline.html
+
+http://www.bogotobogo.com/Hadoop/ELK/ELK_ElasticSearch_Logstash.php
+
+
+LOGSTASH:
+.........
+. Logstash is a server-side data processing pipeline that ingests data from multiple sources simultaneously, transforms it, and then sends it to a "stash" like Elasticsearch.
+
+How Logstash Works:
+................
+The Logstash event processing pipeline has three stages: inputs ? filters ? outputs. Inputs generate events, filters modify them, and outputs ship them elsewhere. Inputs and outputs support codecs that enable you to encode or decode the data as it enters or exits the pipeline without having to use a separate filter.
+
+Inputs:
+........
+You use inputs to get data into Logstash. Some of the more commonly-used inputs are:
+
+file: reads from a file on the filesystem, much like the UNIX command tail -0F
+
+beats: processes events sent by Beats.
+
+ELASTICSEACH:Reads query results from an Elasticsearch cluster
+
+grafite:Reads metrics from the graphite tool
+
+jdbc:Creates events from JDBC data
+
+RABBITMQ: Pulls events from a RabbitMQ exchange
+
+GITHUB:	Reads events from a GitHub webhook
+
+HTTP/HTTPS:Receives events over HTTP or HTTPS
+
+..................................
+Filters:
+............
+Filters are intermediary processing devices in the Logstash pipeline. You can combine filters with conditionals to perform an action on an event if it meets certain criteria. Some useful filters include:
+
+grok: parse and structure arbitrary text. Grok is currently the best way in Logstash to parse unstructured log data into something structured and queryable. With 120 patterns built-in to Logstash, it’s more than likely you’ll find one that meets your needs!
+
+mutate: perform general transformations on event fields. You can rename, remove, replace, and modify fields in your events.
+
+drop: drop an event completely, for example, debug events.
+
+clone: make a copy of an event, possibly adding or removing fields.
+
+geoip: add information about geographical location of IP addresses (also displays amazing charts in Kibana!)
+
+.................
+Outputs
+........
+Outputs are the final phase of the Logstash pipeline. An event can pass through multiple outputs, but once all output processing is complete, the event has finished its execution. Some commonly used outputs include:
+
+elasticsearch: send event data to Elasticsearch. If you’re planning to save your data in an efficient, convenient, and easily queryable format… Elasticsearch is the way to go. Period. Yes, we’re biased :)
+
+file: write event data to a file on disk.
+
+graphite: send event data to graphite, a popular open source tool for storing and graphing metrics. http://graphite.readthedocs.io/en/latest/
+
+CSV: Writes events to disk in a delimited format
+
+InfluxDB:Writes metrics to InfluxDB
+
+MONGODB: Writes events to MongoDB
+OpenTSDB:Writes metrics to OpenTSDB
+
+
+
+
+
+
+constant_score:
+...............
+constant_score query assigns a score of 1.0 to all documents matched by the filter.
+
+GET _search
+{
+  "query": {
+    "constant_score": {
+      "filter": {
+        "term": {
+          "status": "active"
+        }
+      }
+    }
+  }
+}
+
+
+
+DisMax Queries:
+..............
+Let’s now take a closer look at the first actual DisMax query:DisjunctionMaxQuery((Body:captain | Title:captain^1.5)). DisjunctionMax is a funny name… but no one’s laughing. It means that we should search for the term in question across the disjunction of the possible fields, and return themax score from all these sub-queries. So in this case, if captain matched in the Title and matched in Body, we would find the score in both cases and return the maximum of these two as the score for the DisMax clause
+
+Now why would you want to return only the max of the sub-query scores? Consider an example: Let’s say you want to search for harry potter over the Title and Body fields. If we take the sum of the subqueries instead of the max, then a document that has “Harry Potter” in the Title but not in the Body will have the same score as a document that happens to have “Harry” in both Title and Body, but “Potter” nowhere. This is not what you want! If maximization still seems too harsh for your use case, then look up the “tie” parameter which allows you to do something between maximization and summing of clause scores.
+
+http://docs.ongr.io/ElasticsearchDSL/Aggregation/Pipeline/BucketScript
+
+
+Has Child Query:
+...............
+The has_child filter accepts a query and the child type to run against, and results in parent documents that have child docs matching the query. Here is an 
+
+example:
+........
+GET /_search
+{
+    "query": {
+        "has_child" : {
+            "type" : "blog_tag",
+            "query" : {
+                "term" : {
+                    "tag" : "something"
+                }
+            }
+        }
+    }
+}
+
+Note that the has_child is a slow query compared to other queries in the query dsl due to the fact that it performs a join. The performance degrades as the number of matching child documents pointing to unique parent documents increases. If you care about query performance you should not use this query. However if you do happen to use this query then use it as little as possible. Each has_child query that gets added to a search request can increase query time significantly.
+
+
+Has Parent Query:
+...............
+The has_parent query accepts a query and a parent type. The query is executed in the parent document space, which is specified by the parent type. This query returns child documents which associated parents have matched. For the rest has_parent query has the same options and works in the same manner as the has_child query.
+
+GET /_search
+{
+    "query": {
+        "has_parent" : {
+            "parent_type" : "blog",
+            "query" : {
+                "term" : {
+                    "tag" : "something"
+                }
+            }
+        }
+    }
+}
+
+Note that the has_parent is a slow query compared to other queries in the query dsl due to the fact that it performs a join. The performance degrades as the number of matching parent documents increases. If you care about query performance you should not use this query. However if you do happen to use this query then use it as less as possible. Each has_parent query that gets added to a search request can increase query time significantly.
+
+GEO-SPATIAL SEARCH:
+..................
+	WE HAVE TWO TYPES OF DATATYPES IN GEO-SPATIAL SEARCH 
+1.GEO POINT(USED FOR LAT LAN )
+2.GEO SHAPE(USED FOR OTHER THAN LAT LAN LIKE POLYGON,RECTANGLE)
+
+we can also provide lat lan in the form of geohash(we can convert this geohash(tsj4bys) to latlan by using online converters)
+
+1.GEO POINT(USED FOR LAT LAN ):
+...............................
+
+curl -XGET 'http://localhost:9200/us_large_cities/city/_search?pretty=true' -d '
+{
+  "query": {
+    "filtered" : {
+        "query" : {
+            "match_all" : {}
+        },
+        "filter" : {
+            "geo_distance" : {
+                "distance" : "20km",
+                "location" : {
+                    "lat" : 37.9174,
+                    "lon" : -122.3050
+                }
+            }
+        }
+    }
+  }
+}'
+
+
+PARENT_CHILD RELATION SHIP WITH SPRING DATA:
+.............................................
+http://www.voidcn.com/article/p-dyawsvbo-db.html
+
+
+
+1.Range and date range aggregations are almost same only difference we have apply on date fields and numeric fields
+
+2.histogram and date Histogram are almost same difference on date, numeric fields
+
+range[from:100, To:200]
+date range ["field":date from:date ,To:date]
+date histogram[date field intervel]
+histogram[intervel:numeric]
+
+
+
+POST /bookdb_index/book/_search
+{
+    "query": {
+        "term" : {
+            "publisher": "manning"
+        }
+    },
+    "_source" : ["title","publish_date","publisher"]   //MEANS I NEED ONLY THOSE 3 FIELDS
+}
+match_phrase:
+...............
+match_phrase query will analyze the input if analyzers are defined for the queried field and find documents matching the following criterias :
+
+all the terms must appear in the field
+they must have the same order as the input value
+For example, if you index the following documents (using standard analyzer for the field foo):
+
+{ "foo":"I just said hello world" }
+
+{ "foo":"Hello world" }
+
+{ "foo":"World Hello" }
+This match_phrase query will only return the first and second documents :
+
+{
+  "query": {
+    "match_phrase": {
+      "foo": "Hello World"
+    }
+  }
+}
+
+
+
+
+Query boost: This is a percentage or absolute number that can be used to boost any query clause at query time.
+parent child
+
+
+
+Term frequency (tf): This is the square root of the number of times the term appears in the field of a document:
+tf = sqrt(termFreq)
+
+
+Inverse document frequency (idf): This is one plus the natural log (as in "logarithm", not "log file") of the documents in the index divided by the number of documents that contain the term:
+idf = 1 + ln(maxDocs/(docFreq + 1))
+
+
+
+
+.........................
+POST ads/_delete_by_query
+{
+    "query" : {
+        "terms" : {
+            "_id" : 
+              [ "586213440e7d2c7f10fe2574",
+              "586213440e7d2c7f10fe2575",
+              "586213450e7d2c7f10fe2576",
+              "586213450e7d2c7f10fe2577" ]
+        }
+    }
+}
+
+
+
+
+POST twitter/_update_by_query?conflicts=proceed
+{
+  "query": { 
+    "term": {
+      "user": "kimchy"
+    }
+  }
+}
+
+
+
+
+DeleteResponse response = client.prepareDelete("twitter", "_doc", "1").get();
+
+
+
+
+POST /e-trend-web/items/_update_by_query
+{
+  "query" : {
+    "bool" : {
+      "filter" : {
+        "terms" : {
+          "_id" : [1138081, 1138083, 1138089, 123456] 
+        }
+      }
+    }
+  },
+    "script" : {
+      "inline" : "ctx._source.item_name= 'new_name'; ctx._source.item_price= 10000;", 
+      "lang"   : "painless"
+      }
+  }
+
+
+
+
+
+In java you can use setFetchSource like this :
+
+client.prepareSearch(index).setTypes(type)
+            .setFetchSource(new String[] { "field1", "field2" }, null)
+
+
+
+ POST index_name/_search
+    {
+        "_source": {
+            "includes": [ "field_name", "field_name" ],
+            "excludes": [ "field_name" ]
+        },
+        "query" : {
+            "match" : { "field_name" : "value" }
+        }
+    }
+
+
+
+
+
+
+
+BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+boolQueryBuilder.must(QueryBuilders.wildcardQuery("message", "ang*"));
+or
+
+boolQueryBuilder.must(QueryBuilders.prefixQuery("message", "ang"));
+
+
+
+
+
+
+.................................................
+UpdateRequest updateRequest = new UpdateRequest();
+updateRequest.index(indexName);
+updateRequest.type(mappingName);
+updateRequest.id(url); // docID is a url
+XContentBuilder jb = XContentFactory.jsonBuilder();
+jb.startObject(); // article
+jb.startArray("entities"); // multiple entities
+
+for ( /*each namedEntity*/) {
+
+jb.startObject() // entity
+   .field("name", name)
+   .field("frequency",n)
+   .field("entityType", entityType)
+   .startObject("disambiguated") // disambiguation
+   .field("disambiguatedName", disambiguatedNameStr)
+   .field("entitySubTypes", entitySubTypeArray) // multi value field
+   .endObject() // disambiguation
+   .field("quotations", quotationsArray) // multi value field
+   .endObject(); // entity
+
+}
+
+jb.endArray(); // array of nested objects
+b.endObject(); // article
+updateRequest.doc(jb);
+
+
+
+"entities" : [
+    {
+        "disambiguated" : {
+            "entitySubTypes" : [],
+            "disambiguatedName" : "NameX"
+        },
+        "frequency" : 1,
+        "entityType" : "Organization",
+        "quotations" : ["...", "..."],
+        "name" : "entityX"
+    },
+    {
+        "disambiguated" : {
+            "entitySubType" : ["a",  "b" ],
+            "disambiguatedName" : "NameQ"
+        },
+        "frequency" : 5,
+        "entityType" : "secondTypeTest",
+        "quotations" : [ "...", "..."],
+        "name" : "entityY"
+    }
+],
+
+
+
+
+
+
+
+
+
+
+UpdateRequestBuilder br = client.prepareUpdate("index", "enduser", "1");
+    br.setDoc("{\"location\":{ \"name\": \"london\", \"point\": \"44.5,5.2\" }}".getBytes());
+    br.execute();
+
+
+
+"location":{
+          "name": "London",
+           "point": "44.5, 5.2"
+}
+
+REAL TIME MAPPINGS FOR VOTERS:
+..................................................................................
+
+{
+  "voterdetails" : {
+    "mappings" : {
+      "voterdetails" : {
+        "properties" : {
+          "age" : {
+            "type" : "integer"
+          },
+          "caste" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "casteGroup" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "constituencyId" : {
+            "type" : "long"
+          },
+          "constituencyName" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "districtId" : {
+            "type" : "long"
+          },
+          "districtName" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "electorName" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              },
+              "lowercase" : {
+                "type" : "text",
+                "analyzer" : "lowercase"
+              },
+              "ngram" : {
+                "type" : "text",
+                "analyzer" : "ngram_analyzer"
+              },
+              "shingle" : {
+                "type" : "text",
+                "analyzer" : "ntr_shingle"
+              }
+            },
+            "analyzer" : "autocomplete",
+            "search_analyzer" : "autocomplete_search"
+          },
+          "gender" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "houseNumber" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "id" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "mandalId" : {
+            "type" : "long"
+          },
+          "mandalName" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "mobileNumber" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "pollingStationBoothId" : {
+            "type" : "long"
+          },
+          "pollingStationBoothLocation" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "pollingStationBoothNo" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "pollingStationId" : {
+            "type" : "long"
+          },
+          "pollingStationName" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "relativeName" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              },
+              "lowercase" : {
+                "type" : "text",
+                "analyzer" : "lowercase"
+              },
+              "ngram" : {
+                "type" : "text",
+                "analyzer" : "ngram_analyzer"
+              },
+              "shingle" : {
+                "type" : "text",
+                "analyzer" : "ntr_shingle"
+              }
+            },
+            "analyzer" : "autocomplete",
+            "search_analyzer" : "autocomplete_search"
+          },
+          "stateId" : {
+            "type" : "long"
+          },
+          "stateName" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "villageId" : {
+            "type" : "long"
+          },
+          "villageName" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          },
+          "voterId" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+...............................................................................
+http://14.98.164.20:9200/voterdetails/_mapping?pretty=true
+..........................................................
+fieldName.ori
+fieldName.keyword
+fieldName.phonetics
+fieldName.shingle
+fieldName.ngram
+fieldName.lowercase
+https://www.linode.com/docs/databases/elasticsearch/a-guide-to-elasticsearch-plugins/
+0t51@231 
+
+voterdetails/_mapping
+
+
+"mobileNumber" : {
+            "type" : "text",
+            "fields" : {
+              "keyword" : {
+                "type" : "keyword",
+                "ignore_above" : 256
+              }
+            }
+          },
+
+
+PUT /test/_settings
+{
+  "analysis": {
+    "analyzer": {
+      "my_phonetic_analyzer": {
+        "tokenizer": "standard",
+        "filter": [
+          "standard",
+          "lowercase",
+          "my_phonetic_filter"
+        ]
+      }
+    },
+    "filter": {
+      "my_phonetic_filter": {
+        "type": "phonetic",
+        "encoder": "metaphone",
+        "replace": false
+      }
+    }
+  }
+}
+
+
+if we gave data("hello") for ngram analyzer it will store it as a (h,he,hel,hell,hello,e,el,ell,ello,l,llo,l,lo,o)
+
+if we gave data("ottomen") to the phonetic analyzer the this will also match(otomen) it is possible to search for terms that sound similar to other words.
+
+
+curl -XPUT 'http://mycluster/dsi2' -d '{
+  "settings": {
+    "index": {
+      "number_of_shards": 1,
+      "number_of_replicas": 1
+    },
+    "analysis": {
+      "analyzer": {
+        "analyzer_keyword": {
+          "tokenizer": "keyword",
+          "filter": "lowercase"
+        }
+      }
+    }
+  }
+}
+DIFFERENCE BETWEEN NGRAM AND EDGE-NGRAM:
+......................................................................................
+This tokenizer is very similar to nGram but only keeps n-grams which start at the beginning of a token.
+
+And the best example for nGram tokenizer again comes from the documentation:
+
+curl 'localhost:9200/test/_analyze?pretty=1&analyzer=my_ngram_analyzer' -d 'FC Schalke 04'
+
+
+    # FC, Sc, Sch, ch, cha, ha, hal, al, alk, lk, lke, ke, 04
+With this tokenizer definition:
+
+                    "type" : "nGram",
+                    "min_gram" : "2",
+                    "max_gram" : "3",
+                    "token_chars": [ "letter", "digit" ]
+In short:
+
+the tokenizer, depending on the configuration, will create tokens. In this example: FC, Schalke, 04.
+
+nGram generates groups of characters of minimum min_gram size and maximum max_gram size from an input text. Basically, the tokens are split into small chunks and each 
+chunk is anchored on a character (it doesn't matter where this character is, all of them will create chunks).
+
+edgeNGram:
+.........
+ edgeNGram does the same but the chunks always start from the beginning of each token. Basically, the chunks are anchored at the beginning of the tokens.
+
+For the same text as above, an edgeNGram generates this: FC, Sc, Sch, Scha, Schal, 04. Every "word" in the text is considered and for every "word" the first character
+ is the starting point (F from FC, S from Schalke and 0 from 04).
+
+
+PHONETIC ANALYZER:
+................................
+https://www.linode.com/docs/databases/elasticsearch/a-guide-to-elasticsearch-plugins/
+
+Elasticsearch excels when analyzing textual data. Several analyzers come bundled with Elasticsearch which can perform powerful analyses on text.
+
+One of these analyzers is the Phonetic Analysis plugin. By using this plugin, it is possible to search for terms that sound similar to other words.
+
+
+PUT /test/_settings
+{
+  "analysis": {
+    "analyzer": {
+      "my_phonetic_analyzer": {
+        "tokenizer": "standard",
+        "filter": [
+          "standard",
+          "lowercase",
+          "my_phonetic_filter"
+        ]
+      }
+    },
+    "filter": {
+      "my_phonetic_filter": {
+        "type": "phonetic",
+        "encoder": "metaphone",
+        "replace": false
+      }
+    }
+  }
+}
+
+
+
+POST /test/_mapping/doc
+{
+  "properties": {
+    "phonetic": {
+      "type": "text",
+      "analyzer": "my_phonetic_analyzer"
+    }
+  }
+}
+
+
+POST /test/doc
+{
+  "phonetic": "black leather ottoman"
+}
+
+
+The phonetic analysis plugin should be able to recognize that “otomen” and “ottoman” are phonetically similar, and return the correct result.
+
+
+
+Shingle analyzer:
+...................................................................................
+ Shingles are effectively word-nGrams. Given a stream of tokens, the shingle filter will create new tokens by concatenating adjacent terms.
+
+For example, given the phrase “Shingles is a viral disease”, a shingle filter might produce:
+
+Shingles is
+is a
+a viral
+viral disease
+The shingle filter allows you to adjust min_shingle_size and max_shingle_size, so you can create new shingle tokens of any size.
+
+
+"mappings":{
+      "product":{
+         "properties":{
+            "title":{
+               "search_analyzer":"analyzer_shingle",
+               "index_analyzer":"analyzer_shingle",
+               "type":"string"
+            }
+         }
+      }
+   }
+
+
+
+
+
+
+
+....................................................................................
+
+geo-aggs
+
+match_phrase,
+term
+query_string,
+match
+
+java
+spring-core
+spring-mvc
+spring-data
+spring-restful web-service
+spring-soap web servcies
+spring-boot
+spring-social
+spring-batch
+spring-cloud
+micro-services
+design-patterns
+
+python
+mechine learning
+R-Language
+hadoop[spark,hive,pig,mapreduce]
+
+http://www.javainterviewpoint.com/spring-security-database-authentication-example/
+
+https://www.codebyamir.com/blog/user-account-registration-with-spring-boot
+
+https://www.journaldev.com/8748/spring-security-role-based-access-authorization-example

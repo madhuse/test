@@ -1,0 +1,86 @@
+If we set log level to ‘X’ then any log request with 'level <= X' (lesser scopes) will be logged in log files. All requests with higher order will not be logged.
+
+For example, If we set logging level to INFO, then application can log messages with scopes - INFO, WARN, ERROR and FATAL.
+
+ALL < TRACE < DEBUG < INFO < WARN < ERROR < FATAL < OFF
+
+Git,Log4j,Junit,maven,mockito
+
+
+In dependency injection we are giving our two classes(Parent,dependent), just create an objects for those classes and inject into parent class 
+
+@Complonent:we are telling hey container you need to mangage this class also
+
+@Autowired:we are getting the container created object based on the field injection reference.
+
+The @Qualifier annotation along with @Autowired can be used to remove the confusion by specifiying which exact bean will be wired.
+...............................................
+Log4j RollingFileAppender – Logging to file
+Java program to output logs to file.
+
+# Root logger
+log4j.rootLogger=INFO, file
+ 
+# Direct log messages to a log file
+log4j.appender.file=org.apache.log4j.RollingFileAppender
+ 
+log4j.appender.file.File=C:\\temp\info.log
+log4j.appender.file.MaxFileSize=10MB
+log4j.appender.file.MaxBackupIndex=10
+log4j.appender.file.layout=org.apache.log4j.PatternLayout
+log4j.appender.file.layout.ConversionPattern=[%t] %-5p %c %x - %m%n
+
+
+4. Log4j ConsoleAppender – Logging to console
+Java program to output logs to console.
+
+# Root logger
+log4j.rootLogger=INFO, console
+ 
+log4j.appender.console=org.apache.log4j.ConsoleAppender
+log4j.appender.console.Target=System.out
+log4j.appender.console.layout=org.apache.log4j.PatternLayout
+log4j.appender.consoleAppender.layout.ConversionPattern=[%t] %-5p %c %x - %m%n
+
+
+
+log4j.xml
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration debug="true" xmlns:log4j='http://jakarta.apache.org/log4j/'>
+ 
+  <appender name="console" class="org.apache.log4j.ConsoleAppender">
+    <param name="Target" value="System.out"/>
+    <layout class="org.apache.log4j.PatternLayout">
+    <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n" />
+    </layout>
+  </appender>
+ 
+  <appender name="fileAppender" class="org.apache.log4j.RollingFileAppender">
+    <param name="File" value="demoApplication.log"/>
+    <layout class="org.apache.log4j.PatternLayout">
+    <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n" />
+    </layout>
+  </appender>
+ 
+  <root>
+    <priority value ="debug"></priority>
+    <appender-ref ref="console"></appender>
+    <appender-ref ref="fileAppender"></appender>
+  </root>
+ 
+</log4j:configuration>
+
+
+Simple Logging Facade for Java (SLF4J) is an API designed to give generic access to many logging frameworks; log4j being one of them. Which one you use, is then decided at deployment time, not when you write your code. Best practice is to use slf4j to for your own log statements, and then choose the appropriate backend for it (including log4j as well by configuring to use log4j as a logging backend).
+
+In future, if you want to replace log4j with any other logging framework – All you have to do is replace the binding and logging jar files (along with configuration file). It’s easy. No need to change the actual source code files.
+
+So essentially, SLF4J does not replace log4j, they work together.
+
+
+FATAL	Severe errors that cause premature termination. Expect these to be immediately visible on a status console.
+ERROR	Other runtime errors or unexpected conditions. Expect these to be immediately visible on a status console.
+WARNING	Use of deprecated APIs, poor use of API, 'almost' errors, other runtime situations that are undesirable or unexpected, but not necessarily "wrong". Expect these to be immediately visible on a status console.
+INFO	Interesting runtime events (startup/shutdown). Expect these to be immediately visible on a console, so be conservative and keep to a minimum.
+DEBUG	detailed information on the flow through the system. Expect these to be written to logs only.
+TRACE	more detailed information. Expect these to be written to logs only.

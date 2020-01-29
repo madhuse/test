@@ -1,0 +1,101 @@
+Pfizer is an American multinational pharmaceutical corporation headquartered in New York City,[3] with its research headquarters in Groton, Connecticut. It is one of the world's largest pharmaceutical companies.
+
+
+The company develops and produces medicines and vaccines for a wide range of medical disciplines, including immunology, oncology, cardiology, endocrinology, and neurology. Its products include the blockbuster drug Lipitor (atorvastatin), used to lower LDL blood cholesterol; Lyrica (pregabalin) for neuropathic pain and fibromyalgia; Diflucan (fluconazole), an oral antifungal medication; Zithromax (azithromycin), an antibiotic; Viagra (sildenafil) for erectile dysfunction; and Celebrex (also Celebra, celecoxib), an anti-inflammatory drug.
+
+after producing these medicines they will test these medicines with 1000 times then they will upload the status report(Success/fail) into the s3 bucket if we upload the data into the s3 bucket some log files will be generated we are monitoring those logs and then parsing the logs using Logstash Grok filter getting the required fields then finally storing into the elastic search .if the data avail;able in the elastic search then we can generate the meaning ful dashboards using kibna
+
+1.how many are put requests,how many are post,get requests
+
+2. response codes,S3_user_agent,S3_bucket
+
+s3 bytes sent,S3_request_time,S3_remote_ip
+
+.................................................
+6eb1e90584c6243b2b6ce615f26f758aaec7b5a10e91b0fd2dd5dbf67b0559fb sdcsourcedataamrasp15154 [04/Apr/2018:17:34:32 +0000] 148.168.40.5 arn:aws:iam::555316523483:user/CASTROMY 23104347D975B705 REST.PUT.OBJECT - "PUT /IC_DATA_CENTER/raw/a7582e9c-ebfe-41b4-bf8a-091cd7fab340_00705997-0693%20test%206.docx HTTP/1.1" 403 AccessDenied 291 - 5 - "-" "S3 Browser 6-5-9 http://s3browser.com" –
+
+
+
+S3_owner:6eb1e90584c6243b2b6ce615f26f758aaec7b5a10e91b0fd2dd5dbf67b0559fb 
+
+
+S3_bucket:sdcsourcedataamrasp15154
+
+Timestamp:2018-04-04T17:34:32.000Z
+
+S3_remote_ip:148.168.40.5
+
+Iam_user_id:555316523483
+
+S3_request_id:23104347D975B705
+
+S3_operation:REST.PUT.OBJECT 
+
+S3_key:IC_DATA_CENTER/raw/a7582e9c-ebfe-41b4-bf8a-091cd7fab340_00705997-0693%20test%206.docx
+
+Protocal:HTTP/1.1
+
+S3_status:403
+
+S3_error_code:AccessDenied 
+
+S3_bytes_sent:291
+
+S3_user_agent:Browser 6-5-9 http://s3browser.com
+
+
+
+Our i2ee client has Automation testing tool where they are running the different test cases ,while running those testcases some logs will be generated those logs we are monitoring using Logstash Elastic search ,kibana FileBeat.
+
+Parsing those logs using Grok patterns,adding into required fields using mutate,Date filters,elapsed time filters storing data into the elastic search then generating dashboards.
+
+1.elapsed time for Testsuites,TestCases,Keywords 
+
+
+................................
+
+
+Finding out the Elapsed time between Starting job to ending job while if we upload file into tool then that tool will generates logs.we are monitoring those logs finding out the elapsed time between starting job to ending job using logstash storing data into the elastic search generating dashboards
+
+The primary objective of ICJS is to facilitate delivery of justice by digitizing and interlinking the
+data exchange among the Courts, Police, Prosecution, Forensic, Prison, Juvenile Justice and Finger
+Print.
+
+Icjs has been developed to provide a platform to share the crime and criminal information across the Indian judicial system.like police,prison,court,juvenyle system
+
+To enhanse the Data exchange the across the pillars and fastrack the implementation of Justic,fast-track investigation,but also reduce processing time. and providing Analytics to the Fir,police ,Court Prison Pillars.
+
+we can conclude by seeing those dashboards in which state the most firs are registering ,what are differnt types of Fir Status,which age people are doing most crimes
+
+finally we can take decision by seeing those dashbaords due to which those are registering. 
+
+Actually Icjs is a revamp of CCTNS Project.
+CCTNS Project will interconnect about 15000 Police Stations and additional 5000 offices of
+
+supervisory police officers across the country and digitize data related to FIR registration, investigation and charge sheets in all Police Stations. This would lead to development of a national
+
+database of crimes and criminals. Currently, more than 11600 Police Stations in the country are
+
+entering 100 percent FIRs through CCTNS software and more than 26 Lakh FIRs have been registered through CCTNS in last one year alone.
+
+However, CCTNS covers the police stations only and hence falls short of the requirements of
+
+smart criminal jurisprudence unless it is integrated with the other pillars of the criminal justice system, e.g. Courts, Police, Prosecution, Forensic, Prison, Juvenile Justice and Finger Print. There
+
+was a need felt to revamp the CCTNS project by implementing Integrated Criminal Justice System
+(ICJS) by integrating it with the other pillars.
+
+CCTNS stands for Crime and criminal tracking network system where firs are registered using cctns and check status of the fir.
+
+But CCTNS is limited to only for Police station so there is rqrment to develop common platform For the Indian Judicial system.
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+This project will use the Commisioners 
+
+First we have to search for criminal where we get the results of criminals then we have to apply the filters like state ,gender,age then we click the add to compare method to cross check then this result values will goes to input to the other pillars like court, prison then can know the complete status of criminal where his case was pending ,how many days he was in jail providing 360 degree for the criminals
+
+
+
+
+

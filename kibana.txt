@@ -1,0 +1,153 @@
+Kibana is an open source data visualization plugin for Elasticsearch. It provides visualization capabilities on top of the content indexed on an Elasticsearch cluster.
+ Users can create bar, line and scatter plots, or pie charts and maps on top of large volumes of data.
+
+Kibana. Kibana is an open-source data visualization and exploration tool used for log and time-series analytics, application monitoring, and 
+operational intelligence use cases. It offers powerful and easy-to-use features such as histograms, line graphs, pie charts, heat maps, and built-in geospatial support
+
+
+The Logstash event processing pipeline has three stages: inputs ? filters ? outputs. Inputs generate events, filters modify them, and outputs ship them elsewhere. 
+Inputs and outputs support codecs that enable you to encode or decode the data as it enters or exits the pipeline without having to use a separate filter.
+
+The key difference between the two visualization tools stems from their purpose. Grafana is designed for analyzing and visualizing metrics such as system CPU, memory, 
+disk and I/O utilization. Grafana does not allow full-text data querying. Kibana, on the other hand, runs on top of Elasticsearch and is used primarily for 
+analyzing log messages.
+
+Grafana comes with multiple data sources ,where as kibana only works with elastic search
+
+Grafana comes with builtin rba while in kibana we have explicitly configure X-Pack or Search Gaurd
+
+Grafana ships with a built-in alerting engine that allows users to attach conditional rules to dashboard panels that result in triggered alerts to a notification 
+endpoint of your choice (e.g. email, Slack, PagerDuty, custom webhooks).
+
+add to compare
+
+cross search
+
+Using named queries to see which clauses matched
+If you need to know which of the clauses in the bool query matched the documents returned from the query, you can use named queries to assign a name to each clause.
+
+in elastic search we can see the if must clause  and the should class matched then that document will come into the first
+
+In the response, we can see first document matched has a higher score and the second document has a lower score. To examine why is it so, we can simply look to 
+the "matched_queries" section for each document. For the document with the highest score we can see that "matched_queries" field contains "query on dessert" and 
+"query on name field", which indicates it matched two clauses of our query. As for the second document, we can see "query on name field" was the only match and hence 
+the lower score. In this example we were able to understand the scoring better by using the named queries.
+
+
+must means: The clause (query) must appear in matching documents. These clauses must match, like logical AND.
+
+should means: At least one of these clauses must match, like logical OR.
+
+Basically they are used like logical operators AND and OR. See this.
+
+Now in a bool query:
+
+must means: Clauses that must match for the document to be included.
+
+should means: If these clauses match, they increase the _score; otherwise, they have no effect. They are simply used to refine the relevance score for each document.
+
+
+SELECT * FROM /test/object
+WHERE 
+    ((name=foo AND name=bar) OR (info=foo AND info=bar))
+AND state=1
+
+
+
+
+GET /test/object/_search
+{
+  "from": 0,
+  "size": 20,
+  "sort": {
+    "_score": "desc"
+  },
+  "query": {
+    "filtered": {
+      "filter": {
+        "bool": {
+          "must": [
+            {
+              "term": {
+                "state": 1
+              }
+            }
+          ]
+        }
+      },
+      "query": {
+        "bool": {
+          "should": [
+            {
+              "bool": {
+                "must": [
+                  {
+                    "match": {
+                      "name": "foo"
+                    }
+                  },
+                  {
+                    "match": {
+                      "name": "bar"
+                    }
+                  }
+                ],
+                "should": [
+                  {
+                    "match": {
+                      "has_image": {
+                        "query": 1,
+                        "boost": 100
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "bool": {
+                "must": [
+                  {
+                    "match": {
+                      "info": "foo"
+                    }
+                  },
+                  {
+                    "match": {
+                      "info": "bar"
+                    }
+                  }
+                ],
+                "should": [
+                  {
+                    "match": {
+                      "has_image": {
+                        "query": 1,
+                        "boost": 100
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "minimum_should_match": 1
+        }
+      }    
+    }
+  }
+}
+
+
+
+minimum_should_match
+(Optional, string) Minimum number of clauses that must match for a document to be returned. See the minimum_should_match parameter for valid values and more
+ information.
+
+Geo distance
+............
+Finds documents with geo-points within the specified distance of a central point.
+Has Paresnt
+...........
+Returns child documents whose joined parent document matches a provided query. You can create parent-child relationships between documents in the same index using a join field mapping.
+

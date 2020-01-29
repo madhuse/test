@@ -1,0 +1,48 @@
+AWS Elastic Beanstalk is an easy-to-use service for deploying and scaling web applications and services developed with Java, .NET, PHP, Node.js, Python, Ruby, Go, and Docker on familiar servers such as Apache, Nginx, Passenger, and IIS.
+
+You can simply upload your code and Elastic Beanstalk automatically handles the deployment, from capacity provisioning, load balancing, auto-scaling to application health monitoring. At the same time, you retain full control over the AWS resources powering your application and can access the underlying resources at any time.
+
+There is no additional charge for Elastic Beanstalk - you pay only for the AWS resources needed to store and run your applications.
+
+
+Elastic Beanstalk is the fastest and simplest way to deploy your application on AWS. You simply use the AWS Management Console, a Git repository, or an integrated development environment (IDE) such as Eclipse or Visual Studio to upload your application, and Elastic Beanstalk automatically handles the deployment details of capacity provisioning, load balancing, auto-scaling, and application health monitoring. Within minutes, your application will be ready to use without any infrastructure or resource configuration work on your part.
+
+
+Amazon Elastic Compute Cloud (Amazon EC2) is a web service that provides resizable compute capacity in the cloud. It is designed to make web-scale computing easier for developers.
+
+Amazon Simple Storage Service (Amazon S3) is object storage with a simple web service interface to store and retrieve any amount of data from anywhere on the web. It is designed to deliver 99.999999999% durability, and scale past trillions of objects worldwide.
+
+Customers use S3 as a bulk repository, or "data lake," for analytics; backup & recovery; disaster recovery; and serverless computing. Many cloud-native applications even use S3 as primary storage.
+
+Amazon S3 is easy to use with a web-based management console and mobile app and full REST APIs and SDKs for easy integration with third party technologies.
+
+Amazon Relational Database Service (RDS)
+Managed Relational Database Service
+
+...........................
+Amazon Relational Database Service (RDS) makes it easy to set up, operate, and scale a relational database in the cloud. It provides cost-efficient and resizable capacity while managing time-consuming database administration tasks, freeing you to focus on your applications and business.
+
+Amazon RDS gives you access to several familiar database engines, including Amazon Aurora, MySQL, PostgreSQL, MariaDB, Oracle, and SQL Server. This means that the code, applications, and tools you already use with your existing databases can be used with Amazon RDS.
+
+Amazon DynamoDB
+Dynamic Databases in the Cloud
+.........................
+DynamoDB is a fast, fully managed NoSQL database service that makes it simple and cost-effective to store and retrieve any amount of data, and serve any level of request traffic. All data items are stored on Solid State Drives (SSDs) for high availability and durability.
+
+Amazon CloudWatch
+Resource and Application Monitoring
+Amazon CloudWatch provides a reliable, scalable, and flexible monitoring solution that you can start using within minutes. You no longer need to set up, manage, and scale your own monitoring systems and infrastructure.
+
+Amazon CloudWatch enables you to monitor your AWS resources in near real-time, including Amazon EC2 instances, Amazon EBS volumes, Elastic Load Balancers, and Amazon RDS DB instances. Metrics such as CPU utilization, latency, and request counts are provided automatically for these AWS resources. You can also supply your own logs or custom application and system metrics, such as memory usage, transaction volumes, or error rates, and Amazon CloudWatch will monitor these too.
+
+
+AWS Identity and Access Management (IAM)
+Configurable AWS Access Controls
+AWS Identity and Access Management (IAM) enables you to securely control access to AWS services and resources for your users. Using IAM you can create and manage AWS users and groups and use permissions to allow and deny their permissions to AWS resources.
+
+
+Amazon Elasticsearch Service
+Fully managed, reliable, and scalable Elasticsearch service
+Amazon Elasticsearch Service makes it easy to deploy, secure, operate, and scale Elasticsearch for log analytics, full text search, application monitoring, and more. Amazon Elasticsearch Service is a fully managed service that delivers Elasticsearch’s easy-to-use APIs and real-time analytics capabilities alongside the availability, scalability, and security that production workloads require.
+
+The service offers built-in integrations with Kibana, Logstash, and AWS services including Amazon Virtual Private Cloud (VPC), AWS Key Management Service (KMS), Amazon Kinesis Data Firehose, AWS Lambda, Amazon Cognito and Amazon CloudWatch, so that you can go from raw data to actionable insights quickly and securely.

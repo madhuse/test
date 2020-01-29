@@ -1,0 +1,81 @@
+Spring Boot is an open source Java-based framework used to create a Micro Service. It is developed by Pivotal Team. It is easy to create a stand-alone and production ready spring applications using Spring Boot. 
+Spring boot provides production ready application with minimal configuration and embeded servers,Metrics, Helth check,devtools
+
+@SpringBootApplication annotation is equivalent to using @Configuration, @EnableAutoConfiguration, and @ComponentScan with their default attributes. So things further simplified, with a single annotation doing the work of 3.
+
+Advantages
+Spring Boot offers the following advantages to its developers -
+
+Easy to understand and develop spring applications
+Increases productivity
+Reduces the development time
+
+How does it work?
+Spring Boot automatically configures your application based on the dependencies you have added to the project by using @EnableAutoConfiguration annotation. For example, if MySQL database is on your classpath, but you have not configured any database connection, then Spring Boot auto-configures an in-memory database.
+
+The entry point of the spring boot application is the class contains @SpringBootApplication annotation and the main method.
+
+Spring Boot automatically scans all the components included in the project by using @ComponentScan annotation.
+
+
+Spring Boot Starters
+Handling dependency management is a difficult task for big projects. Spring Boot resolves this problem by providing a set of dependencies for developers convenience.
+
+For example, if you want to use Spring and JPA for database access, it is sufficient if you include spring-boot-starter-data-jpa dependency in your project.
+
+Note that all Spring Boot starters follow the same naming pattern spring-boot-starter- *, where * indicates that it is a type of the application.
+
+Spring Boot Application
+The entry point of the Spring Boot Application is the class contains @SpringBootApplication annotation. This class should have the main method to run the Spring Boot application. @SpringBootApplication annotation includes Auto- Configuration, Component Scan, and Spring Boot Configuration.
+
+Dependency Management
+Spring Boot team provides a list of dependencies to support the Spring Boot version for its every release. You do not need to provide a version for dependencies in the build configuration file. Spring Boot automatically configures the dependencies version based on the release. Remember that when you upgrade the Spring Boot version, dependencies also will upgrade automatically.
+
+Note - If you want to specify the version for dependency, you can specify it in your configuration file. However, the Spring Boot team highly recommends that it is not needed to specify the version for dependency.
+
+Interceptor:
+.........
+You can use the Interceptor in Spring Boot to perform operations under the following situations -
+
+Before sending the request to the controller
+
+Before sending the response to the client
+
+For example, you can use an interceptor to add the request header before sending the request to the controller and add the response header before sending the response to the client.
+
+To work with interceptor, you need to create @Component class that supports it and it should implement the HandlerInterceptor interface.
+
+The following are the three methods you should know about while working on Interceptors -
+
+preHandle() method - This is used to perform operations before sending the request to the controller. This method should return true to return the response to the client.
+
+postHandle() method - This is used to perform operations before sending the response to the client.
+
+afterCompletion() method - This is used to perform operations after completing the request and response.
+
+What are the different bean scopes in spring?
+There are 5 bean scopes in spring framework.
+
+No.	Scope	Description
+1)	singleton	The bean instance will be only once and same instance will be returned by the IOC container. It is the default scope.
+2)	prototype	The bean instance will be created each time when requested.
+3)	request	The bean instance will be created per HTTP request.
+4)	session	The bean instance will be created per HTTP session.
+5)	globalsession	The bean instance will be created per HTTP global session. It can be used in portlet context only.
+
+1.Spring Boot command line interfaces
+
+2.Spring Boot Dev Tools
+
+3.Spring Boot actuatos
+
+4.Spring Boot Profiles
+
+5.Spring Boot Swagger
+
+6.Spring Boot banner
+
+7.Spring Boot custom white lable error page
+
+8.Spring Boot with Kafka.
+
